@@ -522,6 +522,23 @@
 
     .banner strong { color: #b7bac0; display: block; margin-bottom: 3px; }
 
+    .ad-slot {
+      overflow: hidden;
+      width: 100%;
+    }
+
+    .horizontal-ad {
+      min-height: 90px;
+    }
+
+    .square-ad {
+      min-height: 250px;
+    }
+
+    .network-ad {
+      min-height: 90px;
+    }
+
     .sidebar-section {
       margin-bottom: 25px;
     }
@@ -858,15 +875,20 @@
 
             <div class="banner ad-slot horizontal-ad" id="horizontalAd" aria-label="Advertisement">
               <script>
-                window.atOptions = {
-                  key: "c8d51593a49bd70af4beea6ece118f65",
-                  format: "iframe",
-                  height: 90,
-                  width: 728,
-                  params: {}
+                atOptions = {
+                  'key' : 'c8d51593a49bd70af4beea6ece118f65',
+                  'format' : 'iframe',
+                  'height' : 90,
+                  'width' : 728,
+                  'params' : {}
                 };
               </script>
               <script src="https://www.highrevenueformat.com/c8d51593a49bd70af4beea6ece118f65/invoke.js"></script>
+            </div>
+
+            <div class="banner ad-slot network-ad" id="networkAd" aria-label="Advertisement">
+              <script async="async" data-cfasync="false" src="https://pl31140485.profitableratecpmnetwork.com/888a3ff9718aa61945641eefa62a3442/invoke.js"></script>
+              <div id="container-888a3ff9718aa61945641eefa62a3442"></div>
             </div>
 
             <section class="section">
@@ -890,12 +912,12 @@
 
             <div class="banner ad-slot square-ad" style="min-height:250px;margin:0 0 25px" id="squareAd" aria-label="Advertisement">
               <script>
-                window.atOptions = {
-                  key: "4aefaaa916ca6e1495907ed63cb68dae",
-                  format: "iframe",
-                  height: 250,
-                  width: 300,
-                  params: {}
+                atOptions = {
+                  'key' : '4aefaaa916ca6e1495907ed63cb68dae',
+                  'format' : 'iframe',
+                  'height' : 250,
+                  'width' : 300,
+                  'params' : {}
                 };
               </script>
               <script src="https://www.highrevenueformat.com/4aefaaa916ca6e1495907ed63cb68dae/invoke.js"></script>
@@ -989,16 +1011,13 @@
       1. Save this file as index.html.
       2. Upload it to a GitHub repository.
       3. Enable Settings → Pages → Deploy from branch.
-      4. Replace DIRECT_LINK and ad slots if needed.
+      4. Replace DIRECT_LINK if needed.
       5. Replace movie images/trailers with content you have rights
          to use or videos that permit embedding.
     */
 
     const CONFIG = {
-      DIRECT_LINK: "https://www.profitableratecpmnetwork.com/yj28w1ws?key=7ecfaf9f9f2818133fad476b8bb6e3b6",
-      SECONDARY_DIRECT_LINK: "https://www.profitableratecpmnetwork.com/ks56pimjsn?key=a15ad04e621f04ebc8f5a6663fc91126",
-      BANNER_KOTAK: { key: "4aefaaa916ca6e1495907ed63cb68dae", width: 300, height: 250 },
-      BANNER_HORIZONTAL: { key: "c8d51593a49bd70af4beea6ece118f65", width: 728, height: 90 }
+      DIRECT_LINK: "https://www.profitableratecpmnetwork.com/yj28w1ws?key=7ecfaf9f9f2818133fad476b8bb6e3b6"
     };
 
     const movies = [
@@ -1511,12 +1530,9 @@
     updateWatchCount();
     initIcons();
 
-    // Ad scripts are embedded directly in the two ad containers above.
   </script>
 
-  <!-- Additional monetization code supplied for this site. -->
+  <!-- Additional network code supplied for this site. -->
   <script src="https://pl31140484.profitableratecpmnetwork.com/19/c9/71/19c971afcb166d240af2ccc36dd32942.js"></script>
-  <script async="async" data-cfasync="false" src="https://pl31140485.profitableratecpmnetwork.com/888a3ff9718aa61945641eefa62a3442/invoke.js"></script>
-  <div id="container-888a3ff9718aa61945641eefa62a3442" aria-hidden="true"></div>
 </body>
 </html>
