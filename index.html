@@ -983,34 +983,45 @@
     */
 
     const CONFIG = {
-      DIRECT_LINK: "https://www.profitableratecpmnetwork.com/yj28w1ws?key=7ecfaf9f9f2818133fad476b8bb6e3b6",
+        DIRECT_LINK: "https://www.profitableratecpmnetwork.com/yj28w1ws?key=7ecfaf9f9f2818133fad476b8bb6e3b6",
 
-      BANNER_KOTAK: `
-        <script>
-          atOptions = {
-            'key' : '4aefaaa916ca6e1495907ed63cb68dae',
-            'format' : 'iframe',
-            'height' : 250,
-            'width' : 300,
-            'params' : {}
-          };
-        </script>
-        <script src="https://www.highrevenueformat.com/4aefaaa916ca6e1495907ed63cb68dae/invoke.js"></script>
-      `,
+        BANNER_KOTAK: {
+          key: "4aefaaa916ca6e1495907ed63cb68dae",
+          width: 300,
+          height: 250,
+          src: "https://www.highrevenueformat.com/4aefaaa916ca6e1495907ed63cb68dae/invoke.js"
+        },
 
-      BANNER_HORIZONTAL: `
-        <script>
-          atOptions = {
-            'key' : 'c8d51593a49bd70af4beea6ece118f65',
-            'format' : 'iframe',
-            'height' : 90,
-            'width' : 728,
-            'params' : {}
-          };
-        </script>
-        <script src="https://www.highrevenueformat.com/c8d51593a49bd70af4beea6ece118f65/invoke.js"></script>
-      `
-    };
+        BANNER_HORIZONTAL: {
+          key: "c8d51593a49bd70af4beea6ece118f65",
+          width: 728,
+          height: 90,
+          src: "https://www.highrevenueformat.com/c8d51593a49bd70af4beea6ece118f65/invoke.js"
+        }
+      };
+
+function loadAdBanner(containerId, adConfig) {
+  const container = document.getElementById(containerId);
+  if (!container) return;
+
+  container.innerHTML = "";
+
+  const script = document.createElement("script");
+
+  window.atOptions = {
+    key: adConfig.key,
+    format: "iframe",
+    height: adConfig.height,
+    width: adConfig.width,
+    params: {}
+  };
+
+  script.src = adConfig.src;
+  script.async = true;
+
+  container.appendChild(script);
+}
+  
 
     const movies = [
       {
