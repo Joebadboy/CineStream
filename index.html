@@ -1,0 +1,1515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="CineStream — cinematic streaming landing page demo." />
+  <meta name="theme-color" content="#09090b" />
+  <title>CineStream — Streaming Landing Page</title>
+
+  <!-- Zero-config: no build step required -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <style>
+    :root {
+      --bg: #08090b;
+      --panel: #0d0f12;
+      --panel-2: #12151a;
+      --line: rgba(255,255,255,.08);
+      --text: #f7f7f8;
+      --muted: #9a9da5;
+      --accent: #e50914;
+      --accent-2: #ff3340;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background:
+        radial-gradient(circle at 72% 5%, rgba(229,9,20,.09), transparent 28%),
+        radial-gradient(circle at 20% 80%, rgba(30,90,130,.08), transparent 28%),
+        var(--bg);
+      color: var(--text);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      min-height: 100vh;
+    }
+
+    body.light {
+      --bg: #f6f7f9;
+      --panel: #ffffff;
+      --panel-2: #eef0f4;
+      --line: rgba(15,23,42,.10);
+      --text: #101216;
+      --muted: #68707d;
+      background: #f6f7f9;
+    }
+
+    button, input { font: inherit; }
+    button { cursor: pointer; }
+
+    .app {
+      display: grid;
+      grid-template-columns: 245px minmax(0, 1fr);
+      min-height: 100vh;
+    }
+
+    .sidebar {
+      position: fixed;
+      inset: 0 auto 0 0;
+      width: 245px;
+      padding: 24px 16px;
+      background: rgba(7,8,10,.96);
+      border-right: 1px solid var(--line);
+      z-index: 40;
+      overflow-y: auto;
+      backdrop-filter: blur(18px);
+    }
+
+    body.light .sidebar {
+      background: rgba(255,255,255,.96);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 0 10px 26px;
+      font-weight: 800;
+      letter-spacing: -.03em;
+      font-size: 19px;
+    }
+
+    .brand-mark {
+      width: 32px;
+      height: 32px;
+      display: grid;
+      place-items: center;
+      border-radius: 9px;
+      background: var(--accent);
+      box-shadow: 0 8px 28px rgba(229,9,20,.28);
+      font-weight: 900;
+    }
+
+    .nav-label {
+      color: #666b74;
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: .14em;
+      padding: 14px 11px 8px;
+      text-transform: uppercase;
+    }
+
+    body.light .nav-label { color: #8a909b; }
+
+    .nav-item {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      padding: 10px 11px;
+      margin: 3px 0;
+      border: 0;
+      border-radius: 9px;
+      color: #969aa2;
+      background: transparent;
+      text-align: left;
+      transition: .2s ease;
+      font-size: 13px;
+    }
+
+    .nav-item:hover { color: var(--text); background: rgba(255,255,255,.055); }
+    .nav-item.active {
+      color: #fff;
+      background: linear-gradient(90deg, rgba(229,9,20,.30), rgba(229,9,20,.08));
+      box-shadow: inset 2px 0 0 var(--accent);
+    }
+
+    body.light .nav-item.active { color: #fff; }
+
+    .nav-item .badge {
+      margin-left: auto;
+      min-width: 22px;
+      padding: 2px 6px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.08);
+      color: #cfd1d6;
+      font-size: 9px;
+      text-align: center;
+    }
+
+    .nav-item .badge.red { background: rgba(229,9,20,.25); color: #ff6b73; }
+
+    .main {
+      grid-column: 2;
+      min-width: 0;
+      padding: 0 30px 50px;
+    }
+
+    .topbar {
+      height: 78px;
+      display: flex;
+      align-items: center;
+      gap: 22px;
+      position: sticky;
+      top: 0;
+      z-index: 30;
+      background: linear-gradient(var(--bg) 55%, transparent);
+    }
+
+    .top-links {
+      display: flex;
+      gap: 24px;
+      white-space: nowrap;
+    }
+
+    .top-links button {
+      border: 0;
+      background: transparent;
+      color: #858992;
+      font-size: 13px;
+    }
+
+    .top-links button:hover, .top-links button.active { color: var(--text); }
+
+    .search {
+      flex: 1;
+      max-width: 390px;
+      margin-left: auto;
+      position: relative;
+    }
+
+    .search input {
+      width: 100%;
+      border: 1px solid var(--line);
+      outline: none;
+      color: var(--text);
+      background: rgba(255,255,255,.055);
+      border-radius: 999px;
+      padding: 10px 42px 10px 38px;
+      font-size: 12px;
+      transition: .2s;
+    }
+
+    body.light .search input { background: #fff; }
+
+    .search input:focus {
+      border-color: rgba(229,9,20,.55);
+      box-shadow: 0 0 0 3px rgba(229,9,20,.08);
+    }
+
+    .search i {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #777b84;
+    }
+
+    .clear-search {
+      position: absolute;
+      right: 11px;
+      top: 50%;
+      transform: translateY(-50%);
+      border: 0;
+      background: transparent;
+      color: #777b84;
+      display: none;
+    }
+
+    .top-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .icon-btn {
+      width: 36px;
+      height: 36px;
+      display: grid;
+      place-items: center;
+      border: 1px solid var(--line);
+      border-radius: 50%;
+      color: #a5a8b0;
+      background: rgba(255,255,255,.035);
+      position: relative;
+    }
+
+    .icon-btn:hover { color: var(--text); border-color: rgba(255,255,255,.18); }
+
+    .notification-dot {
+      position: absolute;
+      right: 5px;
+      top: 4px;
+      width: 6px;
+      height: 6px;
+      background: var(--accent);
+      border-radius: 50%;
+    }
+
+    .avatar {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid rgba(255,255,255,.12);
+    }
+
+    .hero {
+      min-height: 400px;
+      border: 1px solid var(--line);
+      border-radius: 17px;
+      overflow: hidden;
+      position: relative;
+      background: #111;
+      isolation: isolate;
+    }
+
+    .hero-image {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: -3;
+      opacity: .82;
+      transition: opacity .35s ease, transform .8s ease;
+    }
+
+    .hero:hover .hero-image { transform: scale(1.015); }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: -2;
+      background:
+        linear-gradient(90deg, rgba(3,4,6,.98) 0%, rgba(3,4,6,.83) 34%, rgba(3,4,6,.22) 72%, rgba(3,4,6,.12)),
+        linear-gradient(0deg, rgba(3,4,6,.92) 0%, transparent 50%);
+    }
+
+    .hero-content {
+      min-height: 400px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 40px 40px 35px;
+      max-width: 620px;
+    }
+
+    .eyebrow {
+      color: #b9bbc1;
+      font-size: 11px;
+      margin-bottom: 10px;
+    }
+
+    .hero h1 {
+      font-size: clamp(35px, 5vw, 62px);
+      line-height: .96;
+      letter-spacing: -.045em;
+      margin: 0 0 12px;
+      font-weight: 900;
+    }
+
+    .hero-copy {
+      color: #c1c4ca;
+      font-size: 12px;
+      line-height: 1.65;
+      max-width: 530px;
+      margin-bottom: 14px;
+    }
+
+    .meta {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 9px;
+      color: #b7bac0;
+      font-size: 11px;
+      margin-bottom: 20px;
+    }
+
+    .imdb {
+      background: #f5c518;
+      color: #111;
+      font-weight: 900;
+      padding: 2px 5px;
+      border-radius: 4px;
+      font-size: 9px;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 9px;
+    }
+
+    .primary-btn, .secondary-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border: 0;
+      border-radius: 8px;
+      padding: 11px 17px;
+      font-weight: 800;
+      font-size: 12px;
+      transition: transform .2s, box-shadow .2s, background .2s;
+    }
+
+    .primary-btn {
+      background: var(--accent);
+      color: white;
+      box-shadow: 0 10px 30px rgba(229,9,20,.20);
+    }
+
+    .primary-btn:hover { transform: translateY(-1px); background: var(--accent-2); }
+    .secondary-btn {
+      color: #e8e9ec;
+      background: rgba(255,255,255,.09);
+      border: 1px solid rgba(255,255,255,.09);
+    }
+
+    .secondary-btn:hover { background: rgba(255,255,255,.14); }
+
+    .hero-dots {
+      position: absolute;
+      right: 26px;
+      bottom: 22px;
+      display: flex;
+      gap: 5px;
+    }
+
+    .hero-dot {
+      width: 7px;
+      height: 7px;
+      border: 0;
+      padding: 0;
+      border-radius: 999px;
+      background: rgba(255,255,255,.28);
+    }
+
+    .hero-dot.active { width: 22px; background: var(--accent); }
+
+    .content-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 230px;
+      gap: 24px;
+      margin-top: 27px;
+    }
+
+    .section {
+      margin-bottom: 27px;
+    }
+
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 13px;
+    }
+
+    .section-head h2 {
+      margin: 0;
+      font-size: 14px;
+      letter-spacing: -.01em;
+    }
+
+    .view-more {
+      border: 0;
+      background: transparent;
+      color: #858991;
+      font-size: 10px;
+    }
+
+    .view-more:hover { color: var(--text); }
+
+    .row-wrap { position: relative; }
+    .card-row {
+      display: grid;
+      grid-auto-flow: column;
+      grid-auto-columns: 160px;
+      gap: 12px;
+      overflow-x: auto;
+      padding: 2px 1px 8px;
+      scrollbar-width: none;
+      scroll-behavior: smooth;
+    }
+    .card-row::-webkit-scrollbar { display: none; }
+
+    .movie-card {
+      position: relative;
+      border-radius: 10px;
+      overflow: hidden;
+      aspect-ratio: 2 / 3;
+      background: #15171b;
+      border: 1px solid var(--line);
+      cursor: pointer;
+      transition: transform .25s ease, border-color .25s ease;
+    }
+
+    .movie-card:hover {
+      transform: translateY(-5px) scale(1.015);
+      border-color: rgba(255,255,255,.18);
+    }
+
+    .movie-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform .35s ease, filter .35s ease;
+    }
+
+    .movie-card:hover img { transform: scale(1.04); filter: brightness(.72); }
+
+    .movie-overlay {
+      position: absolute;
+      inset: auto 0 0;
+      padding: 35px 10px 10px;
+      background: linear-gradient(transparent, rgba(0,0,0,.92));
+      opacity: 0;
+      transition: opacity .25s;
+    }
+
+    .movie-card:hover .movie-overlay { opacity: 1; }
+
+    .movie-title {
+      font-size: 11px;
+      font-weight: 800;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .movie-year {
+      color: #a9abb1;
+      font-size: 9px;
+      margin-top: 3px;
+    }
+
+    .row-arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 30px;
+      height: 30px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background: rgba(8,9,11,.88);
+      border: 1px solid rgba(255,255,255,.12);
+      color: white;
+      z-index: 5;
+    }
+    .row-arrow.left { left: -10px; }
+    .row-arrow.right { right: -10px; }
+
+    .banner {
+      min-height: 90px;
+      border: 1px dashed rgba(255,255,255,.15);
+      background:
+        linear-gradient(135deg, rgba(229,9,20,.10), rgba(255,255,255,.025)),
+        var(--panel);
+      border-radius: 10px;
+      display: grid;
+      place-items: center;
+      color: #777b83;
+      font-size: 10px;
+      text-align: center;
+      padding: 12px;
+      margin: 8px 0 26px;
+    }
+
+    .banner strong { color: #b7bac0; display: block; margin-bottom: 3px; }
+
+    .sidebar-section {
+      margin-bottom: 25px;
+    }
+
+    .rank-list {
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+    }
+
+    .rank-item {
+      display: grid;
+      grid-template-columns: 24px 45px minmax(0,1fr);
+      gap: 8px;
+      align-items: center;
+      cursor: pointer;
+      padding: 5px;
+      border-radius: 8px;
+      transition: background .2s;
+    }
+
+    .rank-item:hover { background: rgba(255,255,255,.045); }
+
+    .rank-number {
+      font-size: 11px;
+      color: #737780;
+      font-weight: 800;
+      text-align: center;
+    }
+
+    .rank-img {
+      width: 45px;
+      height: 54px;
+      object-fit: cover;
+      border-radius: 6px;
+    }
+
+    .rank-name {
+      font-size: 10px;
+      font-weight: 800;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .rank-sub {
+      color: #747881;
+      font-size: 8px;
+      margin-top: 3px;
+    }
+
+    .favorite {
+      display: grid;
+      grid-template-columns: 46px 1fr 24px;
+      align-items: center;
+      gap: 9px;
+      padding: 7px;
+      border: 1px solid var(--line);
+      border-radius: 9px;
+      background: rgba(255,255,255,.02);
+      margin-bottom: 8px;
+    }
+
+    .favorite img {
+      width: 46px;
+      height: 56px;
+      border-radius: 6px;
+      object-fit: cover;
+    }
+
+    .favorite-title {
+      font-size: 10px;
+      font-weight: 800;
+    }
+
+    .favorite-sub {
+      color: #777b84;
+      font-size: 8px;
+      margin-top: 3px;
+    }
+
+    .favorite button {
+      border: 0;
+      background: transparent;
+      color: #777b84;
+    }
+
+    .empty {
+      display: none;
+      padding: 35px 15px;
+      text-align: center;
+      color: #858991;
+      border: 1px dashed var(--line);
+      border-radius: 10px;
+      font-size: 11px;
+    }
+
+    .mobile-menu {
+      display: none;
+    }
+
+    .page-title {
+      font-size: 28px;
+      font-weight: 900;
+      letter-spacing: -.04em;
+      margin: 10px 0 7px;
+    }
+
+    .page-description {
+      color: var(--muted);
+      font-size: 12px;
+      margin-bottom: 24px;
+    }
+
+    .large-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(155px,1fr));
+      gap: 15px;
+    }
+
+    .toast-container {
+      position: fixed;
+      right: 22px;
+      bottom: 22px;
+      z-index: 100;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .toast {
+      min-width: 230px;
+      max-width: 330px;
+      padding: 12px 14px;
+      border-radius: 10px;
+      background: #17191e;
+      border: 1px solid rgba(255,255,255,.10);
+      box-shadow: 0 18px 45px rgba(0,0,0,.35);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 11px;
+      animation: toastIn .28s ease forwards;
+    }
+
+    .toast.out { animation: toastOut .25s ease forwards; }
+    @keyframes toastIn { from { opacity:0; transform: translateY(12px); } to { opacity:1; transform:translateY(0); } }
+    @keyframes toastOut { from { opacity:1; transform:translateY(0); } to { opacity:0; transform:translateY(12px); } }
+
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 90;
+      background: rgba(0,0,0,.78);
+      backdrop-filter: blur(10px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .modal-backdrop.open { display: flex; }
+
+    .video-modal {
+      width: min(900px, 100%);
+      background: #0c0e11;
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 30px 100px rgba(0,0,0,.55);
+    }
+
+    .video-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 15px;
+    }
+
+    .video-title { font-size: 13px; font-weight: 800; }
+    .close-modal {
+      width: 30px;
+      height: 30px;
+      border: 0;
+      border-radius: 50%;
+      background: rgba(255,255,255,.07);
+      color: #bbb;
+      display: grid;
+      place-items: center;
+    }
+
+    .video-stage {
+      aspect-ratio: 16 / 9;
+      background: #000;
+      position: relative;
+    }
+
+    .video-stage iframe, .video-stage video {
+      width: 100%;
+      height: 100%;
+      border: 0;
+      display: block;
+    }
+
+    .video-note {
+      padding: 11px 15px 15px;
+      color: #777b84;
+      font-size: 9px;
+    }
+
+    .page-view { display: none; }
+    .page-view.active { display: block; }
+
+    @media (max-width: 1080px) {
+      .app { grid-template-columns: 205px minmax(0,1fr); }
+      .sidebar { width: 205px; }
+      .main { padding: 0 20px 40px; }
+      .content-grid { grid-template-columns: minmax(0,1fr); }
+      .right-rail { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 20px; }
+      .top-links { gap: 13px; }
+    }
+
+    @media (max-width: 760px) {
+      .app { display: block; }
+      .sidebar {
+        transform: translateX(-105%);
+        transition: transform .25s ease;
+        box-shadow: 20px 0 50px rgba(0,0,0,.35);
+      }
+      .sidebar.open { transform: translateX(0); }
+      .main { padding: 0 14px 35px; }
+      .mobile-menu {
+        display: grid;
+        place-items: center;
+        width: 36px;
+        height: 36px;
+        border: 1px solid var(--line);
+        border-radius: 50%;
+        background: transparent;
+        color: var(--text);
+      }
+      .topbar { height: 68px; gap: 10px; }
+      .top-links { display: none; }
+      .search { max-width: none; }
+      .hero, .hero-content { min-height: 450px; }
+      .hero-content { padding: 30px 23px 27px; }
+      .hero h1 { font-size: 42px; }
+      .right-rail { display: block; }
+      .sidebar-section { margin-top: 20px; }
+      .card-row { grid-auto-columns: 135px; }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="app">
+    <aside class="sidebar" id="sidebar">
+      <div class="brand">
+        <div class="brand-mark">N</div>
+        <span>CineStream</span>
+      </div>
+
+      <div class="nav-label">Menu</div>
+      <button class="nav-item active" data-page="home"><i data-lucide="house" size="15"></i> Home</button>
+      <button class="nav-item" data-page="watchlist"><i data-lucide="heart" size="15"></i> Watch List <span class="badge" id="watchCount">0</span></button>
+      <button class="nav-item" data-page="coming"><i data-lucide="calendar-days" size="15"></i> Coming Soon <span class="badge red">New</span></button>
+      <button class="nav-item" data-page="discovery"><i data-lucide="compass" size="15"></i> Discovery</button>
+
+      <div class="nav-label">Social</div>
+      <button class="nav-item" data-page="friends"><i data-lucide="users" size="15"></i> Friends <span class="badge">3</span></button>
+      <button class="nav-item" data-page="parties"><i data-lucide="sparkles" size="15"></i> Parties <span class="badge red">Live</span></button>
+      <button class="nav-item" data-page="media"><i data-lucide="library" size="15"></i> Media</button>
+
+      <div class="nav-label">General</div>
+      <button class="nav-item" data-page="settings"><i data-lucide="settings" size="15"></i> Setting</button>
+      <button class="nav-item" id="logoutBtn"><i data-lucide="log-out" size="15"></i> Log Out</button>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <button class="mobile-menu" id="mobileMenu" aria-label="Open menu"><i data-lucide="menu"></i></button>
+
+        <nav class="top-links">
+          <button class="active" data-top-filter="all">TV Show</button>
+          <button data-top-filter="movies">Movies</button>
+          <button data-top-filter="anime">Animes</button>
+        </nav>
+
+        <div class="search">
+          <i data-lucide="search" size="15"></i>
+          <input id="searchInput" type="search" placeholder="Search here..." autocomplete="off" />
+          <button class="clear-search" id="clearSearch" aria-label="Clear search">×</button>
+        </div>
+
+        <div class="top-actions">
+          <button class="icon-btn" id="themeToggle" title="Toggle Night / Light mode"><i data-lucide="moon" size="15"></i></button>
+          <button class="icon-btn" id="notifyBtn" title="Notifications">
+            <i data-lucide="bell" size="15"></i><span class="notification-dot"></span>
+          </button>
+          <img class="avatar" src="https://i.pravatar.cc/100?img=12" alt="User avatar" />
+        </div>
+      </header>
+
+      <!-- HOME -->
+      <section class="page-view active" id="page-home">
+        <section class="hero" id="hero">
+          <img class="hero-image" id="heroImage" src="" alt="" />
+          <div class="hero-content">
+            <div class="eyebrow" id="heroEyebrow"></div>
+            <h1 id="heroTitle"></h1>
+            <p class="hero-copy" id="heroCopy"></p>
+            <div class="meta" id="heroMeta"></div>
+            <div class="hero-actions">
+              <button class="primary-btn" id="heroWatch"><i data-lucide="play" size="14"></i> Watch</button>
+              <button class="secondary-btn" id="heroAdd"><i data-lucide="plus" size="14"></i> Add</button>
+            </div>
+          </div>
+          <div class="hero-dots" id="heroDots"></div>
+        </section>
+
+        <div class="content-grid">
+          <div>
+            <section class="section">
+              <div class="section-head">
+                <h2>New Release</h2>
+                <button class="view-more" data-page="discovery">View More →</button>
+              </div>
+              <div class="row-wrap">
+                <button class="row-arrow left" data-scroll="newRow" data-dir="-1"><i data-lucide="chevron-left" size="16"></i></button>
+                <div class="card-row" id="newRow"></div>
+                <button class="row-arrow right" data-scroll="newRow" data-dir="1"><i data-lucide="chevron-right" size="16"></i></button>
+              </div>
+            </section>
+
+            <div class="banner" id="horizontalAd">
+              <div>
+                <strong>ADVERTISEMENT — 728 × 90</strong>
+                <span>Replace this slot with your Adsterra horizontal banner script.</span>
+              </div>
+            </div>
+
+            <section class="section">
+              <div class="section-head">
+                <h2>Trending Now</h2>
+                <button class="view-more" data-page="discovery">View More →</button>
+              </div>
+              <div class="row-wrap">
+                <button class="row-arrow left" data-scroll="trendRow" data-dir="-1"><i data-lucide="chevron-left" size="16"></i></button>
+                <div class="card-row" id="trendRow"></div>
+                <button class="row-arrow right" data-scroll="trendRow" data-dir="1"><i data-lucide="chevron-right" size="16"></i></button>
+              </div>
+            </section>
+          </div>
+
+          <aside class="right-rail">
+            <section class="sidebar-section">
+              <div class="section-head"><h2>Popular Movies</h2><button class="view-more" data-page="discovery">More</button></div>
+              <div class="rank-list" id="popularList"></div>
+            </section>
+
+            <div class="banner" style="min-height:250px;margin:0 0 25px" id="squareAd">
+              <div>
+                <strong>ADVERTISEMENT — 300 × 250</strong>
+                <span>Replace this slot with your Adsterra square banner script.</span>
+              </div>
+            </div>
+
+            <section class="sidebar-section">
+              <div class="section-head"><h2>Favorites</h2><button class="view-more" data-page="watchlist">All</button></div>
+              <div id="favoritesList"></div>
+            </section>
+          </aside>
+        </div>
+
+        <div class="empty" id="homeEmpty">No titles match your search.</div>
+      </section>
+
+      <!-- DYNAMIC PAGES -->
+      <section class="page-view" id="page-watchlist">
+        <h1 class="page-title">Watch List</h1>
+        <p class="page-description">Your saved movies and shows.</p>
+        <div class="large-grid" id="watchGrid"></div>
+        <div class="empty" id="watchEmpty">Your watch list is empty. Use the + button on a title to add one.</div>
+      </section>
+
+      <section class="page-view" id="page-coming">
+        <h1 class="page-title">Coming Soon</h1>
+        <p class="page-description">Upcoming titles and fresh releases.</p>
+        <div class="large-grid" id="comingGrid"></div>
+      </section>
+
+      <section class="page-view" id="page-discovery">
+        <h1 class="page-title">Discovery</h1>
+        <p class="page-description">Explore the full catalog and find something new.</p>
+        <div class="large-grid" id="discoveryGrid"></div>
+      </section>
+
+      <section class="page-view" id="page-friends">
+        <h1 class="page-title">Friends</h1>
+        <p class="page-description">See what your friends are watching.</p>
+        <div class="large-grid">
+          <div class="favorite"><img src="https://i.pravatar.cc/120?img=32" alt=""><div><div class="favorite-title">Alex Morgan</div><div class="favorite-sub">Watching The Last Horizon</div></div><button onclick="showToast('Alex is watching now')"><i data-lucide="play" size="14"></i></button></div>
+          <div class="favorite"><img src="https://i.pravatar.cc/120?img=47" alt=""><div><div class="favorite-title">Maya Chen</div><div class="favorite-sub">Finished Neon City</div></div><button onclick="showToast('Maya finished an episode')"><i data-lucide="check" size="14"></i></button></div>
+          <div class="favorite"><img src="https://i.pravatar.cc/120?img=14" alt=""><div><div class="favorite-title">Daniel Kim</div><div class="favorite-sub">Added 2 titles</div></div><button onclick="showToast('Daniel added new titles')"><i data-lucide="plus" size="14"></i></button></div>
+        </div>
+      </section>
+
+      <section class="page-view" id="page-parties">
+        <h1 class="page-title">Watch Parties</h1>
+        <p class="page-description">Join a live room or create your own watch party.</p>
+        <div class="large-grid">
+          <div class="favorite"><img src="https://images.unsplash.com/photo-1485846234645-a62644f84728?auto=format&fit=crop&w=300&q=80" alt=""><div><div class="favorite-title">Friday Movie Night</div><div class="favorite-sub">12 people · Live now</div></div><button onclick="showToast('Joined Friday Movie Night')"><i data-lucide="log-in" size="14"></i></button></div>
+          <div class="favorite"><img src="https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?auto=format&fit=crop&w=300&q=80" alt=""><div><div class="favorite-title">Sci-Fi Club</div><div class="favorite-sub">8 people · Starts soon</div></div><button onclick="showToast('Party reminder set')"><i data-lucide="bell" size="14"></i></button></div>
+        </div>
+      </section>
+
+      <section class="page-view" id="page-media">
+        <h1 class="page-title">Media</h1>
+        <p class="page-description">Trailers, clips and saved media.</p>
+        <div class="large-grid" id="mediaGrid"></div>
+      </section>
+
+      <section class="page-view" id="page-settings">
+        <h1 class="page-title">Settings</h1>
+        <p class="page-description">Customize your CineStream experience.</p>
+        <div class="space-y-3 max-w-xl">
+          <div class="favorite" style="grid-template-columns:1fr auto"><div><div class="favorite-title">Autoplay trailers</div><div class="favorite-sub">Play previews automatically when browsing.</div></div><button class="icon-btn" id="autoplaySetting"><i data-lucide="toggle-right" size="17"></i></button></div>
+          <div class="favorite" style="grid-template-columns:1fr auto"><div><div class="favorite-title">Notifications</div><div class="favorite-sub">Receive updates about releases and parties.</div></div><button class="icon-btn" id="notificationSetting"><i data-lucide="bell" size="17"></i></button></div>
+          <div class="favorite" style="grid-template-columns:1fr auto"><div><div class="favorite-title">Theme</div><div class="favorite-sub">Switch between Night and Light mode.</div></div><button class="icon-btn" id="settingsTheme"><i data-lucide="moon" size="17"></i></button></div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div class="modal-backdrop" id="videoModal" role="dialog" aria-modal="true" aria-label="Video player">
+    <div class="video-modal">
+      <div class="video-head">
+        <div class="video-title" id="modalTitle">Trailer</div>
+        <button class="close-modal" id="closeModal" aria-label="Close"><i data-lucide="x" size="15"></i></button>
+      </div>
+      <div class="video-stage" id="videoStage"></div>
+      <div class="video-note">Demo player. Replace the trailer URL in the movie data with your own licensed/embeddable video.</div>
+    </div>
+  </div>
+
+  <div class="toast-container" id="toastContainer"></div>
+
+  <script>
+    /*
+      ============================================================
+      CineStream — GitHub Pages ready
+      ============================================================
+      1. Save this file as index.html.
+      2. Upload it to a GitHub repository.
+      3. Enable Settings → Pages → Deploy from branch.
+      4. Replace DIRECT_LINK and ad slots if needed.
+      5. Replace movie images/trailers with content you have rights
+         to use or videos that permit embedding.
+    */
+
+    const CONFIG = {
+      DIRECT_LINK: "https://www.contoh-direct-link-adsterra.com/xyz123",
+
+      // Paste your Adsterra scripts inside these two HTML strings.
+      BANNER_KOTAK: `
+        <!-- Paste script iklan kotak 300x250 di sini -->
+      `,
+      BANNER_HORIZONTAL: `
+        <!-- Paste script iklan horizontal 728x90 di sini -->
+      `
+    };
+
+    const movies = [
+      {
+        id: "cyberpunk",
+        title: "Cyberpunk: Edgerunners",
+        year: 2022,
+        rating: "8.3",
+        genre: "Anime, Action, Sci-Fi",
+        duration: "10 Episodes",
+        type: "anime",
+        image: "https://images.unsplash.com/photo-1519608487953-e999c86e7455?auto=format&fit=crop&w=900&q=85",
+        poster: "https://images.unsplash.com/photo-1519608487953-e999c86e7455?auto=format&fit=crop&w=500&q=85",
+        description: "In a dystopian city obsessed with technology and body modification, a street kid becomes an edgerunner — a mercenary outlaw.",
+        trailer: "https://www.youtube.com/embed/OifiVCnFKzM"
+      },
+      {
+        id: "odyssey",
+        title: "The Odyssey",
+        year: 2026,
+        rating: "8.7",
+        genre: "Action, Adventure, History",
+        duration: "2h 32m",
+        type: "movies",
+        image: "https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&w=1200&q=85",
+        poster: "https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&w=500&q=85",
+        description: "A soldier's ten-year odyssey home after war — battling gods, monsters, and the sea itself.",
+        trailer: "https://www.youtube.com/embed/dQw4w9WgXcQ"
+      },
+      {
+        id: "dune",
+        title: "Dune: Part Two",
+        year: 2024,
+        rating: "8.6",
+        genre: "Sci-Fi, Adventure",
+        duration: "2h 46m",
+        type: "movies",
+        image: "https://images.unsplash.com/photo-1500534623283-312aade485b7?auto=format&fit=crop&w=900&q=85",
+        poster: "https://images.unsplash.com/photo-1500534623283-312aade485b7?auto=format&fit=crop&w=500&q=85",
+        description: "Paul Atreides unites with Chani and the Fremen while seeking revenge against the conspirators.",
+        trailer: "https://www.youtube.com/embed/Way9Dexny3w"
+      },
+      {
+        id: "neon",
+        title: "Neon City",
+        year: 2026,
+        rating: "8.1",
+        genre: "Crime, Thriller",
+        duration: "1h 58m",
+        type: "movies",
+        image: "https://images.unsplash.com/photo-1519608487953-e999c86e7455?auto=format&fit=crop&w=900&q=85",
+        poster: "https://images.unsplash.com/photo-1519608487953-e999c86e7455?auto=format&fit=crop&w=500&q=85",
+        description: "A detective follows a missing-person case through a city that never turns its lights off.",
+        trailer: "https://www.youtube.com/embed/ScMzIvxBSi4"
+      },
+      {
+        id: "last-horizon",
+        title: "The Last Horizon",
+        year: 2025,
+        rating: "8.4",
+        genre: "Drama, Sci-Fi",
+        duration: "2h 10m",
+        type: "movies",
+        image: "https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?auto=format&fit=crop&w=900&q=85",
+        poster: "https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?auto=format&fit=crop&w=500&q=85",
+        description: "A final expedition searches for a habitable world beyond the edge of known space.",
+        trailer: "https://www.youtube.com/embed/ScMzIvxBSi4"
+      },
+      {
+        id: "avatar",
+        title: "Ocean Worlds",
+        year: 2025,
+        rating: "8.0",
+        genre: "Adventure, Fantasy",
+        duration: "2h 14m",
+        type: "movies",
+        image: "https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=900&q=85",
+        poster: "https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=500&q=85",
+        description: "A family discovers an ocean planet where every living thing is connected.",
+        trailer: "https://www.youtube.com/embed/ScMzIvxBSi4"
+      },
+      {
+        id: "samurai",
+        title: "Shadow Samurai",
+        year: 2026,
+        rating: "8.2",
+        genre: "Action, Drama",
+        duration: "1h 51m",
+        type: "movies",
+        image: "https://images.unsplash.com/photo-1528360983277-13d401cdc186?auto=format&fit=crop&w=900&q=85",
+        poster: "https://images.unsplash.com/photo-1528360983277-13d401cdc186?auto=format&fit=crop&w=500&q=85",
+        description: "A wandering swordsman protects a village caught between rival clans.",
+        trailer: "https://www.youtube.com/embed/ScMzIvxBSi4"
+      },
+      {
+        id: "house",
+        title: "House of Dragons",
+        year: 2025,
+        rating: "8.5",
+        genre: "Fantasy, Drama",
+        duration: "10 Episodes",
+        type: "movies",
+        image: "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=900&q=85",
+        poster: "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=500&q=85",
+        description: "A royal family struggles for control while ancient creatures return.",
+        trailer: "https://www.youtube.com/embed/ScMzIvxBSi4"
+      },
+      {
+        id: "velocity",
+        title: "Velocity",
+        year: 2026,
+        rating: "7.9",
+        genre: "Action, Racing",
+        duration: "2h 02m",
+        type: "movies",
+        image: "https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&w=900&q=85",
+        poster: "https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&w=500&q=85",
+        description: "A street racer gets one last chance to outrun the people hunting him.",
+        trailer: "https://www.youtube.com/embed/ScMzIvxBSi4"
+      },
+      {
+        id: "aurora",
+        title: "Aurora",
+        year: 2025,
+        rating: "8.0",
+        genre: "Drama, Mystery",
+        duration: "1h 47m",
+        type: "movies",
+        image: "https://images.unsplash.com/photo-1500534623283-312aade485b7?auto=format&fit=crop&w=900&q=85",
+        poster: "https://images.unsplash.com/photo-1500534623283-312aade485b7?auto=format&fit=crop&w=500&q=85",
+        description: "A photographer follows strange lights that appear over the frozen north.",
+        trailer: "https://www.youtube.com/embed/ScMzIvxBSi4"
+      },
+      {
+        id: "arc",
+        title: "Arc Protocol",
+        year: 2026,
+        rating: "8.3",
+        genre: "Techno Thriller",
+        duration: "1h 55m",
+        type: "movies",
+        image: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=900&q=85",
+        poster: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=500&q=85",
+        description: "An engineer uncovers a hidden protocol capable of changing the global network.",
+        trailer: "https://www.youtube.com/embed/ScMzIvxBSi4"
+      }
+    ];
+
+    const state = {
+      heroIndex: 0,
+      page: "home",
+      filter: "all",
+      query: "",
+      watchlist: JSON.parse(localStorage.getItem("cinestream-watchlist") || "[]")
+    };
+
+    const $ = (selector) => document.querySelector(selector);
+    const $$ = (selector) => [...document.querySelectorAll(selector)];
+
+    function initIcons() {
+      if (window.lucide) lucide.createIcons();
+    }
+
+    function movieCard(movie) {
+      const saved = state.watchlist.includes(movie.id);
+      return `
+        <article class="movie-card" data-id="${movie.id}" tabindex="0" aria-label="Open ${escapeHtml(movie.title)}">
+          <img src="${movie.poster}" alt="${escapeHtml(movie.title)} poster" loading="lazy">
+          <div class="movie-overlay">
+            <div class="movie-title">${escapeHtml(movie.title)}</div>
+            <div class="movie-year">${movie.year} · ★ ${movie.rating}</div>
+          </div>
+          <button class="absolute right-2 top-2 w-7 h-7 rounded-full bg-black/60 border border-white/10 text-white grid place-items-center opacity-0 movie-add" title="${saved ? "Remove from list" : "Add to list"}" aria-label="${saved ? "Remove" : "Add"}">
+            <i data-lucide="${saved ? "check" : "plus"}" size="13"></i>
+          </button>
+        </article>
+      `;
+    }
+
+    function rankItem(movie, index) {
+      return `
+        <div class="rank-item" data-id="${movie.id}">
+          <div class="rank-number">${String(index + 1).padStart(2, "0")}</div>
+          <img class="rank-img" src="${movie.poster}" alt="${escapeHtml(movie.title)}" loading="lazy">
+          <div>
+            <div class="rank-name">${escapeHtml(movie.title)}</div>
+            <div class="rank-sub">★ ${movie.rating} · ${movie.year}</div>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderHero() {
+      const movie = movies[state.heroIndex];
+      $("#heroImage").src = movie.image;
+      $("#heroImage").alt = movie.title;
+      $("#heroEyebrow").textContent = `${movie.genre} · ${movie.year}`;
+      $("#heroTitle").textContent = movie.title;
+      $("#heroCopy").textContent = movie.description;
+      $("#heroMeta").innerHTML = `
+        <span class="imdb">IMDb</span>
+        <strong>${movie.rating}</strong>
+        <span>•</span>
+        <span>${movie.year}</span>
+        <span>•</span>
+        <span>${movie.duration}</span>
+      `;
+      $("#heroDots").innerHTML = movies.slice(0, 5).map((m, i) =>
+        `<button class="hero-dot ${i === state.heroIndex ? "active" : ""}" data-hero="${i}" aria-label="Show ${escapeHtml(m.title)}"></button>`
+      ).join("");
+      initIcons();
+    }
+
+    function renderHomeRows() {
+      const filtered = getFilteredMovies();
+      $("#newRow").innerHTML = filtered.slice(0, 8).map(movieCard).join("");
+      $("#trendRow").innerHTML = filtered.slice(3).concat(filtered.slice(0,3)).slice(0, 8).map(movieCard).join("");
+      $("#popularList").innerHTML = movies.slice(0, 6).map(rankItem).join("");
+
+      const favs = state.watchlist.length
+        ? movies.filter(m => state.watchlist.includes(m.id)).slice(0, 3)
+        : movies.slice(0, 3);
+
+      $("#favoritesList").innerHTML = favs.map(m => `
+        <div class="favorite" data-id="${m.id}">
+          <img src="${m.poster}" alt="${escapeHtml(m.title)}">
+          <div><div class="favorite-title">${escapeHtml(m.title)}</div><div class="favorite-sub">★ ${m.rating} · ${m.year}</div></div>
+          <button class="fav-remove" title="Remove from list"><i data-lucide="${state.watchlist.includes(m.id) ? "x" : "play"}" size="14"></i></button>
+        </div>
+      `).join("");
+
+      $("#homeEmpty").style.display = filtered.length ? "none" : "block";
+      bindMovieInteractions();
+      initIcons();
+    }
+
+    function renderDynamicPages() {
+      const all = getFilteredMovies();
+      $("#watchGrid").innerHTML = movies.filter(m => state.watchlist.includes(m.id)).map(movieCard).join("");
+      $("#watchEmpty").style.display = state.watchlist.length ? "none" : "block";
+
+      $("#comingGrid").innerHTML = movies.slice(5).map(movieCard).join("");
+      $("#discoveryGrid").innerHTML = all.map(movieCard).join("");
+      $("#mediaGrid").innerHTML = movies.slice(0, 8).map(movieCard).join("");
+
+      bindMovieInteractions();
+      initIcons();
+      updateWatchCount();
+    }
+
+    function getFilteredMovies() {
+      let result = [...movies];
+
+      if (state.filter !== "all") {
+        result = result.filter(m => m.type === state.filter || (state.filter === "movies" && m.type === "movies"));
+      }
+
+      if (state.query) {
+        const q = state.query.toLowerCase();
+        result = result.filter(m =>
+          m.title.toLowerCase().includes(q) ||
+          m.genre.toLowerCase().includes(q) ||
+          String(m.year).includes(q)
+        );
+      }
+
+      return result;
+    }
+
+    function bindMovieInteractions() {
+      $$(".movie-card, .rank-item, .favorite").forEach(el => {
+        if (el.dataset.bound === "1") return;
+        el.dataset.bound = "1";
+
+        el.addEventListener("click", (event) => {
+          if (event.target.closest(".movie-add, .fav-remove")) return;
+          const movie = movies.find(m => m.id === el.dataset.id);
+          if (movie) openPlayer(movie);
+        });
+
+        el.addEventListener("keydown", (event) => {
+          if (event.key === "Enter") {
+            const movie = movies.find(m => m.id === el.dataset.id);
+            if (movie) openPlayer(movie);
+          }
+        });
+      });
+
+      $$(".movie-add").forEach(btn => {
+        btn.addEventListener("click", (event) => {
+          event.stopPropagation();
+          const card = btn.closest(".movie-card");
+          toggleWatchlist(card.dataset.id);
+        });
+      });
+
+      $$(".fav-remove").forEach(btn => {
+        btn.addEventListener("click", (event) => {
+          event.stopPropagation();
+          const item = btn.closest(".favorite");
+          const id = item.dataset.id;
+          if (state.watchlist.includes(id)) toggleWatchlist(id);
+          else {
+            const movie = movies.find(m => m.id === id);
+            if (movie) openPlayer(movie);
+          }
+        });
+      });
+    }
+
+    function navigate(page) {
+      state.page = page;
+      $$(".page-view").forEach(view => view.classList.remove("active"));
+      const target = $(`#page-${page}`);
+      if (target) target.classList.add("active");
+
+      $$(".nav-item[data-page]").forEach(btn => btn.classList.toggle("active", btn.dataset.page === page));
+      $("#sidebar").classList.remove("open");
+
+      if (page === "watchlist" || page === "coming" || page === "discovery" || page === "media") renderDynamicPages();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function toggleWatchlist(id) {
+      const movie = movies.find(m => m.id === id);
+      if (!movie) return;
+
+      if (state.watchlist.includes(id)) {
+        state.watchlist = state.watchlist.filter(x => x !== id);
+        showToast(`${movie.title} removed from Watch List`);
+      } else {
+        state.watchlist.push(id);
+        showToast(`${movie.title} added to Watch List`);
+      }
+
+      localStorage.setItem("cinestream-watchlist", JSON.stringify(state.watchlist));
+      updateWatchCount();
+      renderHomeRows();
+      renderDynamicPages();
+    }
+
+    function updateWatchCount() {
+      $("#watchCount").textContent = state.watchlist.length;
+    }
+
+    function openPlayer(movie) {
+      $("#modalTitle").textContent = movie.title;
+      $("#videoStage").innerHTML = `
+        <iframe
+          src="${movie.trailer}?autoplay=1&rel=0"
+          title="${escapeHtml(movie.title)} trailer"
+          allow="autoplay; encrypted-media; picture-in-picture"
+          allowfullscreen>
+        </iframe>
+      `;
+      $("#videoModal").classList.add("open");
+      document.body.style.overflow = "hidden";
+    }
+
+    function closePlayer() {
+      $("#videoModal").classList.remove("open");
+      $("#videoStage").innerHTML = "";
+      document.body.style.overflow = "";
+    }
+
+    function showToast(message, icon = "check-circle") {
+      const toast = document.createElement("div");
+      toast.className = "toast";
+      toast.innerHTML = `<i data-lucide="${icon}" size="15"></i><span>${escapeHtml(message)}</span>`;
+      $("#toastContainer").appendChild(toast);
+      initIcons();
+
+      setTimeout(() => {
+        toast.classList.add("out");
+        setTimeout(() => toast.remove(), 260);
+      }, 2500);
+    }
+
+    function setTheme(light) {
+      document.body.classList.toggle("light", light);
+      localStorage.setItem("cinestream-theme", light ? "light" : "dark");
+      $("#themeToggle").innerHTML = `<i data-lucide="${light ? "sun" : "moon"}" size="15"></i>`;
+      $("#settingsTheme").innerHTML = `<i data-lucide="${light ? "sun" : "moon"}" size="17"></i>`;
+      initIcons();
+    }
+
+    function escapeHtml(value) {
+      return String(value).replace(/[&<>"']/g, ch => ({
+        "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#039;"
+      }[ch]));
+    }
+
+    function openDirectLink() {
+      if (!CONFIG.DIRECT_LINK || CONFIG.DIRECT_LINK.includes("contoh-direct-link")) {
+        showToast("Set your real DIRECT_LINK in CONFIG first.", "info");
+        return;
+      }
+      window.open(CONFIG.DIRECT_LINK, "_blank", "noopener,noreferrer");
+    }
+
+    // Sidebar navigation
+    $$(".nav-item[data-page]").forEach(btn => {
+      btn.addEventListener("click", () => navigate(btn.dataset.page));
+    });
+
+    // Top category filter
+    $$("[data-top-filter]").forEach(btn => {
+      btn.addEventListener("click", () => {
+        state.filter = btn.dataset.topFilter;
+        $$("[data-top-filter]").forEach(x => x.classList.toggle("active", x === btn));
+        if (state.page !== "home") navigate("home");
+        renderHomeRows();
+        showToast(`Showing ${btn.textContent.trim()}`);
+      });
+    });
+
+    // Search
+    $("#searchInput").addEventListener("input", e => {
+      state.query = e.target.value.trim();
+      $("#clearSearch").style.display = state.query ? "block" : "none";
+      renderHomeRows();
+      renderDynamicPages();
+    });
+
+    $("#clearSearch").addEventListener("click", () => {
+      $("#searchInput").value = "";
+      state.query = "";
+      $("#clearSearch").style.display = "none";
+      renderHomeRows();
+      renderDynamicPages();
+    });
+
+    // Hero
+    $("#heroWatch").addEventListener("click", () => {
+      openPlayer(movies[state.heroIndex]);
+    });
+
+    $("#heroAdd").addEventListener("click", () => {
+      toggleWatchlist(movies[state.heroIndex].id);
+    });
+
+    $("#heroDots").addEventListener("click", e => {
+      const btn = e.target.closest("[data-hero]");
+      if (!btn) return;
+      state.heroIndex = Number(btn.dataset.hero);
+      renderHero();
+    });
+
+    // Auto rotate hero
+    setInterval(() => {
+      if (state.page !== "home" || document.hidden) return;
+      state.heroIndex = (state.heroIndex + 1) % Math.min(movies.length, 5);
+      renderHero();
+    }, 7000);
+
+    // Horizontal row controls
+    $$("[data-scroll]").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const row = $(`#${btn.dataset.scroll}`);
+        row.scrollBy({ left: Number(btn.dataset.dir) * 500, behavior: "smooth" });
+      });
+    });
+
+    // View More / page links
+    $$("[data-page]").forEach(btn => {
+      if (btn.classList.contains("nav-item")) return;
+      btn.addEventListener("click", () => navigate(btn.dataset.page));
+    });
+
+    // Theme
+    const savedTheme = localStorage.getItem("cinestream-theme");
+    setTheme(savedTheme === "light");
+
+    $("#themeToggle").addEventListener("click", () => {
+      setTheme(!document.body.classList.contains("light"));
+      showToast(document.body.classList.contains("light") ? "Light mode enabled" : "Night mode enabled", "sun-moon");
+    });
+
+    $("#settingsTheme").addEventListener("click", () => {
+      setTheme(!document.body.classList.contains("light"));
+      showToast("Theme updated", "palette");
+    });
+
+    $("#notifyBtn").addEventListener("click", () => {
+      showToast("You have 3 new notifications", "bell");
+    });
+
+    $("#autoplaySetting").addEventListener("click", () => showToast("Autoplay preference updated", "toggle-right"));
+    $("#notificationSetting").addEventListener("click", () => showToast("Notification preference updated", "bell"));
+
+    $("#logoutBtn").addEventListener("click", () => showToast("Demo logout — connect your real auth here.", "log-out"));
+
+    // Mobile sidebar
+    $("#mobileMenu").addEventListener("click", () => $("#sidebar").classList.toggle("open"));
+
+    // Modal
+    $("#closeModal").addEventListener("click", closePlayer);
+    $("#videoModal").addEventListener("click", e => {
+      if (e.target === $("#videoModal")) closePlayer();
+    });
+
+    document.addEventListener("keydown", e => {
+      if (e.key === "Escape") closePlayer();
+    });
+
+    // Initial render
+    renderHero();
+    renderHomeRows();
+    renderDynamicPages();
+    updateWatchCount();
+    initIcons();
+
+    /*
+      Adsterra placement helper:
+      The visible placeholders above are intentionally safe for GitHub.
+      To inject your real ad code, replace the innerHTML of #squareAd and
+      #horizontalAd with the script snippets supplied by your ad network.
+    */
+  </script>
+</body>
+</html>
