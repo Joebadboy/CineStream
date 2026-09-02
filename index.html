@@ -970,578 +970,1232 @@
   <div class="toast-container" id="toastContainer"></div>
 
   <script>
-    /*
-      ============================================================
-      CineStream — GitHub Pages ready
-      ============================================================
-      1. Save this file as index.html.
-      2. Upload it to a GitHub repository.
-      3. Enable Settings → Pages → Deploy from branch.
-      4. Replace DIRECT_LINK and ad slots if needed.
-      5. Replace movie images/trailers with content you have rights
-         to use or videos that permit embedding.
-    */
+  /*
+    ============================================================
+    CineStream — GitHub Pages Ready
+    ============================================================
+    Configuration:
+    - Smart Link / Direct Link
+    - Adsterra 300x250
+    - Adsterra 728x90
+  */
 
-    const CONFIG = {
-        DIRECT_LINK: "https://www.profitableratecpmnetwork.com/yj28w1ws?key=7ecfaf9f9f2818133fad476b8bb6e3b6",
+  const CONFIG = {
+    DIRECT_LINK: "https://www.profitableratecpmnetwork.com/yj28w1ws?key=7ecfaf9f9f2818133fad476b8bb6e3b6",
 
-        BANNER_KOTAK: {
-          key: "4aefaaa916ca6e1495907ed63cb68dae",
-          width: 300,
-          height: 250,
-          src: "https://www.highrevenueformat.com/4aefaaa916ca6e1495907ed63cb68dae/invoke.js"
-        },
+    BANNER_KOTAK: {
+      key: "4aefaaa916ca6e1495907ed63cb68dae",
+      width: 300,
+      height: 250,
+      src: "https://www.highrevenueformat.com/4aefaaa916ca6e1495907ed63cb68dae/invoke.js"
+    },
 
-        BANNER_HORIZONTAL: {
-          key: "c8d51593a49bd70af4beea6ece118f65",
-          width: 728,
-          height: 90,
-          src: "https://www.highrevenueformat.com/c8d51593a49bd70af4beea6ece118f65/invoke.js"
-        }
-      };
-
-function loadAdBanner(containerId, adConfig) {
-  const container = document.getElementById(containerId);
-  if (!container) return;
-
-  container.innerHTML = "";
-
-  const script = document.createElement("script");
-
-  window.atOptions = {
-    key: adConfig.key,
-    format: "iframe",
-    height: adConfig.height,
-    width: adConfig.width,
-    params: {}
+    BANNER_HORIZONTAL: {
+      key: "c8d51593a49bd70af4beea6ece118f65",
+      width: 728,
+      height: 90,
+      src: "https://www.highrevenueformat.com/c8d51593a49bd70af4beea6ece118f65/invoke.js"
+    }
   };
 
-  script.src = adConfig.src;
-  script.async = true;
+  /*
+    ============================================================
+    AD BANNER LOADER
+    ============================================================
+  */
 
-  container.appendChild(script);
-}
-  
+  function loadAdBanner(containerId, adConfig) {
+    const container = document.getElementById(containerId);
 
-    const movies = [
-      {
-        id: "cyberpunk",
-        title: "Cyberpunk: Edgerunners",
-        year: 2022,
-        rating: "8.3",
-        genre: "Anime, Action, Sci-Fi",
-        duration: "10 Episodes",
-        type: "anime",
-        image: "https://images.unsplash.com/photo-1519608487953-e999c86e7455?auto=format&fit=crop&w=900&q=85",
-        poster: "https://images.unsplash.com/photo-1519608487953-e999c86e7455?auto=format&fit=crop&w=500&q=85",
-        description: "In a dystopian city obsessed with technology and body modification, a street kid becomes an edgerunner — a mercenary outlaw.",
-        trailer: "https://www.youtube.com/embed/OifiVCnFKzM"
-      },
-      {
-        id: "odyssey",
-        title: "The Odyssey",
-        year: 2026,
-        rating: "8.7",
-        genre: "Action, Adventure, History",
-        duration: "2h 32m",
-        type: "movies",
-        image: "https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&w=1200&q=85",
-        poster: "https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&w=500&q=85",
-        description: "A soldier's ten-year odyssey home after war — battling gods, monsters, and the sea itself.",
-        trailer: "https://www.youtube.com/embed/dQw4w9WgXcQ"
-      },
-      {
-        id: "dune",
-        title: "Dune: Part Two",
-        year: 2024,
-        rating: "8.6",
-        genre: "Sci-Fi, Adventure",
-        duration: "2h 46m",
-        type: "movies",
-        image: "https://images.unsplash.com/photo-1500534623283-312aade485b7?auto=format&fit=crop&w=900&q=85",
-        poster: "https://images.unsplash.com/photo-1500534623283-312aade485b7?auto=format&fit=crop&w=500&q=85",
-        description: "Paul Atreides unites with Chani and the Fremen while seeking revenge against the conspirators.",
-        trailer: "https://www.youtube.com/embed/Way9Dexny3w"
-      },
-      {
-        id: "neon",
-        title: "Neon City",
-        year: 2026,
-        rating: "8.1",
-        genre: "Crime, Thriller",
-        duration: "1h 58m",
-        type: "movies",
-        image: "https://images.unsplash.com/photo-1519608487953-e999c86e7455?auto=format&fit=crop&w=900&q=85",
-        poster: "https://images.unsplash.com/photo-1519608487953-e999c86e7455?auto=format&fit=crop&w=500&q=85",
-        description: "A detective follows a missing-person case through a city that never turns its lights off.",
-        trailer: "https://www.youtube.com/embed/ScMzIvxBSi4"
-      },
-      {
-        id: "last-horizon",
-        title: "The Last Horizon",
-        year: 2025,
-        rating: "8.4",
-        genre: "Drama, Sci-Fi",
-        duration: "2h 10m",
-        type: "movies",
-        image: "https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?auto=format&fit=crop&w=900&q=85",
-        poster: "https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?auto=format&fit=crop&w=500&q=85",
-        description: "A final expedition searches for a habitable world beyond the edge of known space.",
-        trailer: "https://www.youtube.com/embed/ScMzIvxBSi4"
-      },
-      {
-        id: "avatar",
-        title: "Ocean Worlds",
-        year: 2025,
-        rating: "8.0",
-        genre: "Adventure, Fantasy",
-        duration: "2h 14m",
-        type: "movies",
-        image: "https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=900&q=85",
-        poster: "https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=500&q=85",
-        description: "A family discovers an ocean planet where every living thing is connected.",
-        trailer: "https://www.youtube.com/embed/ScMzIvxBSi4"
-      },
-      {
-        id: "samurai",
-        title: "Shadow Samurai",
-        year: 2026,
-        rating: "8.2",
-        genre: "Action, Drama",
-        duration: "1h 51m",
-        type: "movies",
-        image: "https://images.unsplash.com/photo-1528360983277-13d401cdc186?auto=format&fit=crop&w=900&q=85",
-        poster: "https://images.unsplash.com/photo-1528360983277-13d401cdc186?auto=format&fit=crop&w=500&q=85",
-        description: "A wandering swordsman protects a village caught between rival clans.",
-        trailer: "https://www.youtube.com/embed/ScMzIvxBSi4"
-      },
-      {
-        id: "house",
-        title: "House of Dragons",
-        year: 2025,
-        rating: "8.5",
-        genre: "Fantasy, Drama",
-        duration: "10 Episodes",
-        type: "movies",
-        image: "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=900&q=85",
-        poster: "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=500&q=85",
-        description: "A royal family struggles for control while ancient creatures return.",
-        trailer: "https://www.youtube.com/embed/ScMzIvxBSi4"
-      },
-      {
-        id: "velocity",
-        title: "Velocity",
-        year: 2026,
-        rating: "7.9",
-        genre: "Action, Racing",
-        duration: "2h 02m",
-        type: "movies",
-        image: "https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&w=900&q=85",
-        poster: "https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&w=500&q=85",
-        description: "A street racer gets one last chance to outrun the people hunting him.",
-        trailer: "https://www.youtube.com/embed/ScMzIvxBSi4"
-      },
-      {
-        id: "aurora",
-        title: "Aurora",
-        year: 2025,
-        rating: "8.0",
-        genre: "Drama, Mystery",
-        duration: "1h 47m",
-        type: "movies",
-        image: "https://images.unsplash.com/photo-1500534623283-312aade485b7?auto=format&fit=crop&w=900&q=85",
-        poster: "https://images.unsplash.com/photo-1500534623283-312aade485b7?auto=format&fit=crop&w=500&q=85",
-        description: "A photographer follows strange lights that appear over the frozen north.",
-        trailer: "https://www.youtube.com/embed/ScMzIvxBSi4"
-      },
-      {
-        id: "arc",
-        title: "Arc Protocol",
-        year: 2026,
-        rating: "8.3",
-        genre: "Techno Thriller",
-        duration: "1h 55m",
-        type: "movies",
-        image: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=900&q=85",
-        poster: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=500&q=85",
-        description: "An engineer uncovers a hidden protocol capable of changing the global network.",
-        trailer: "https://www.youtube.com/embed/ScMzIvxBSi4"
-      }
-    ];
-
-    const state = {
-      heroIndex: 0,
-      page: "home",
-      filter: "all",
-      query: "",
-      watchlist: JSON.parse(localStorage.getItem("cinestream-watchlist") || "[]")
-    };
-
-    const $ = (selector) => document.querySelector(selector);
-    const $$ = (selector) => [...document.querySelectorAll(selector)];
-
-    function initIcons() {
-      if (window.lucide) lucide.createIcons();
+    if (!container || !adConfig) {
+      return;
     }
 
-    function movieCard(movie) {
-      const saved = state.watchlist.includes(movie.id);
-      return `
-        <article class="movie-card" data-id="${movie.id}" tabindex="0" aria-label="Open ${escapeHtml(movie.title)}">
-          <img src="${movie.poster}" alt="${escapeHtml(movie.title)} poster" loading="lazy">
-          <div class="movie-overlay">
-            <div class="movie-title">${escapeHtml(movie.title)}</div>
-            <div class="movie-year">${movie.year} · ★ ${movie.rating}</div>
+    container.innerHTML = "";
+
+    const optionsScript = document.createElement("script");
+
+    optionsScript.type = "text/javascript";
+    optionsScript.text = `
+      window.atOptions = {
+        key: "${adConfig.key}",
+        format: "iframe",
+        height: ${adConfig.height},
+        width: ${adConfig.width},
+        params: {}
+      };
+    `;
+
+    container.appendChild(optionsScript);
+
+    const invokeScript = document.createElement("script");
+
+    invokeScript.type = "text/javascript";
+    invokeScript.src = adConfig.src;
+    invokeScript.async = false;
+
+    container.appendChild(invokeScript);
+  }
+
+
+  /*
+    ============================================================
+    MOVIE DATA
+    ============================================================
+  */
+
+  const movies = [
+    {
+      id: "cyberpunk",
+      title: "Cyberpunk: Edgerunners",
+      year: 2022,
+      rating: "8.3",
+      genre: "Anime, Action, Sci-Fi",
+      duration: "10 Episodes",
+      type: "anime",
+      image: "https://images.unsplash.com/photo-1519608487953-e999c86e7455?auto=format&fit=crop&w=900&q=85",
+      poster: "https://images.unsplash.com/photo-1519608487953-e999c86e7455?auto=format&fit=crop&w=500&q=85",
+      description: "In a dystopian city obsessed with technology and body modification, a street kid becomes an edgerunner — a mercenary outlaw.",
+      trailer: "https://www.youtube.com/embed/OifiVCnFKzM"
+    },
+    {
+      id: "odyssey",
+      title: "The Odyssey",
+      year: 2026,
+      rating: "8.7",
+      genre: "Action, Adventure, History",
+      duration: "2h 32m",
+      type: "movies",
+      image: "https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&w=1200&q=85",
+      poster: "https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&w=500&q=85",
+      description: "A soldier's ten-year odyssey home after war — battling gods, monsters, and the sea itself.",
+      trailer: "https://www.youtube.com/embed/dQw4w9WgXcQ"
+    },
+    {
+      id: "dune",
+      title: "Dune: Part Two",
+      year: 2024,
+      rating: "8.6",
+      genre: "Sci-Fi, Adventure",
+      duration: "2h 46m",
+      type: "movies",
+      image: "https://images.unsplash.com/photo-1500534623283-312aade485b7?auto=format&fit=crop&w=900&q=85",
+      poster: "https://images.unsplash.com/photo-1500534623283-312aade485b7?auto=format&fit=crop&w=500&q=85",
+      description: "Paul Atreides unites with Chani and the Fremen while seeking revenge against the conspirators.",
+      trailer: "https://www.youtube.com/embed/Way9Dexny3w"
+    },
+    {
+      id: "neon",
+      title: "Neon City",
+      year: 2026,
+      rating: "8.1",
+      genre: "Crime, Thriller",
+      duration: "1h 58m",
+      type: "movies",
+      image: "https://images.unsplash.com/photo-1519608487953-e999c86e7455?auto=format&fit=crop&w=900&q=85",
+      poster: "https://images.unsplash.com/photo-1519608487953-e999c86e7455?auto=format&fit=crop&w=500&q=85",
+      description: "A detective follows a missing-person case through a city that never turns its lights off.",
+      trailer: "https://www.youtube.com/embed/ScMzIvxBSi4"
+    },
+    {
+      id: "last-horizon",
+      title: "The Last Horizon",
+      year: 2025,
+      rating: "8.4",
+      genre: "Drama, Sci-Fi",
+      duration: "2h 10m",
+      type: "movies",
+      image: "https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?auto=format&fit=crop&w=900&q=85",
+      poster: "https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?auto=format&fit=crop&w=500&q=85",
+      description: "A final expedition searches for a habitable world beyond the edge of known space.",
+      trailer: "https://www.youtube.com/embed/ScMzIvxBSi4"
+    },
+    {
+      id: "avatar",
+      title: "Ocean Worlds",
+      year: 2025,
+      rating: "8.0",
+      genre: "Adventure, Fantasy",
+      duration: "2h 14m",
+      type: "movies",
+      image: "https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=900&q=85",
+      poster: "https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=500&q=85",
+      description: "A family discovers an ocean planet where every living thing is connected.",
+      trailer: "https://www.youtube.com/embed/ScMzIvxBSi4"
+    },
+    {
+      id: "samurai",
+      title: "Shadow Samurai",
+      year: 2026,
+      rating: "8.2",
+      genre: "Action, Drama",
+      duration: "1h 51m",
+      type: "movies",
+      image: "https://images.unsplash.com/photo-1528360983277-13d401cdc186?auto=format&fit=crop&w=900&q=85",
+      poster: "https://images.unsplash.com/photo-1528360983277-13d401cdc186?auto=format&fit=crop&w=500&q=85",
+      description: "A wandering swordsman protects a village caught between rival clans.",
+      trailer: "https://www.youtube.com/embed/ScMzIvxBSi4"
+    },
+    {
+      id: "house",
+      title: "House of Dragons",
+      year: 2025,
+      rating: "8.5",
+      genre: "Fantasy, Drama",
+      duration: "10 Episodes",
+      type: "movies",
+      image: "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=900&q=85",
+      poster: "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=500&q=85",
+      description: "A royal family struggles for control while ancient creatures return.",
+      trailer: "https://www.youtube.com/embed/ScMzIvxBSi4"
+    },
+    {
+      id: "velocity",
+      title: "Velocity",
+      year: 2026,
+      rating: "7.9",
+      genre: "Action, Racing",
+      duration: "2h 02m",
+      type: "movies",
+      image: "https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&w=900&q=85",
+      poster: "https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&w=500&q=85",
+      description: "A street racer gets one last chance to outrun the people hunting him.",
+      trailer: "https://www.youtube.com/embed/ScMzIvxBSi4"
+    },
+    {
+      id: "aurora",
+      title: "Aurora",
+      year: 2025,
+      rating: "8.0",
+      genre: "Drama, Mystery",
+      duration: "1h 47m",
+      type: "movies",
+      image: "https://images.unsplash.com/photo-1500534623283-312aade485b7?auto=format&fit=crop&w=900&q=85",
+      poster: "https://images.unsplash.com/photo-1500534623283-312aade485b7?auto=format&fit=crop&w=500&q=85",
+      description: "A photographer follows strange lights that appear over the frozen north.",
+      trailer: "https://www.youtube.com/embed/ScMzIvxBSi4"
+    },
+    {
+      id: "arc",
+      title: "Arc Protocol",
+      year: 2026,
+      rating: "8.3",
+      genre: "Techno Thriller",
+      duration: "1h 55m",
+      type: "movies",
+      image: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=900&q=85",
+      poster: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=500&q=85",
+      description: "An engineer uncovers a hidden protocol capable of changing the global network.",
+      trailer: "https://www.youtube.com/embed/ScMzIvxBSi4"
+    }
+  ];
+
+
+  /*
+    ============================================================
+    APPLICATION STATE
+    ============================================================
+  */
+
+  const state = {
+    heroIndex: 0,
+    page: "home",
+    filter: "all",
+    query: "",
+    watchlist: JSON.parse(
+      localStorage.getItem("cinestream-watchlist") || "[]"
+    )
+  };
+
+
+  /*
+    ============================================================
+    DOM HELPERS
+    ============================================================
+  */
+
+  const $ = (selector) => document.querySelector(selector);
+  const $$ = (selector) => [...document.querySelectorAll(selector)];
+
+
+  /*
+    ============================================================
+    ICONS
+    ============================================================
+  */
+
+  function initIcons() {
+    if (window.lucide) {
+      lucide.createIcons();
+    }
+  }
+
+
+  /*
+    ============================================================
+    MOVIE CARD
+    ============================================================
+  */
+
+  function movieCard(movie) {
+    const saved = state.watchlist.includes(movie.id);
+
+    return `
+      <article
+        class="movie-card"
+        data-id="${movie.id}"
+        tabindex="0"
+        aria-label="Open ${escapeHtml(movie.title)}"
+      >
+        <img
+          src="${movie.poster}"
+          alt="${escapeHtml(movie.title)} poster"
+          loading="lazy"
+        >
+
+        <div class="movie-overlay">
+          <div class="movie-title">
+            ${escapeHtml(movie.title)}
           </div>
-          <button class="absolute right-2 top-2 w-7 h-7 rounded-full bg-black/60 border border-white/10 text-white grid place-items-center opacity-0 movie-add" title="${saved ? "Remove from list" : "Add to list"}" aria-label="${saved ? "Remove" : "Add"}">
-            <i data-lucide="${saved ? "check" : "plus"}" size="13"></i>
-          </button>
-        </article>
-      `;
-    }
 
-    function rankItem(movie, index) {
-      return `
-        <div class="rank-item" data-id="${movie.id}">
-          <div class="rank-number">${String(index + 1).padStart(2, "0")}</div>
-          <img class="rank-img" src="${movie.poster}" alt="${escapeHtml(movie.title)}" loading="lazy">
-          <div>
-            <div class="rank-name">${escapeHtml(movie.title)}</div>
-            <div class="rank-sub">★ ${movie.rating} · ${movie.year}</div>
+          <div class="movie-year">
+            ${movie.year} · ★ ${movie.rating}
           </div>
         </div>
-      `;
-    }
 
-    function renderHero() {
-      const movie = movies[state.heroIndex];
-      $("#heroImage").src = movie.image;
-      $("#heroImage").alt = movie.title;
-      $("#heroEyebrow").textContent = `${movie.genre} · ${movie.year}`;
-      $("#heroTitle").textContent = movie.title;
-      $("#heroCopy").textContent = movie.description;
-      $("#heroMeta").innerHTML = `
-        <span class="imdb">IMDb</span>
-        <strong>${movie.rating}</strong>
-        <span>•</span>
-        <span>${movie.year}</span>
-        <span>•</span>
-        <span>${movie.duration}</span>
-      `;
-      $("#heroDots").innerHTML = movies.slice(0, 5).map((m, i) =>
-        `<button class="hero-dot ${i === state.heroIndex ? "active" : ""}" data-hero="${i}" aria-label="Show ${escapeHtml(m.title)}"></button>`
-      ).join("");
-      initIcons();
-    }
+        <button
+          class="absolute right-2 top-2 w-7 h-7 rounded-full bg-black/60 border border-white/10 text-white grid place-items-center opacity-0 movie-add"
+          title="${saved ? "Remove from list" : "Add to list"}"
+          aria-label="${saved ? "Remove" : "Add"}"
+        >
+          <i
+            data-lucide="${saved ? "check" : "plus"}"
+            size="13"
+          ></i>
+        </button>
+      </article>
+    `;
+  }
 
-    function renderHomeRows() {
-      const filtered = getFilteredMovies();
-      $("#newRow").innerHTML = filtered.slice(0, 8).map(movieCard).join("");
-      $("#trendRow").innerHTML = filtered.slice(3).concat(filtered.slice(0,3)).slice(0, 8).map(movieCard).join("");
-      $("#popularList").innerHTML = movies.slice(0, 6).map(rankItem).join("");
 
-      const favs = state.watchlist.length
-        ? movies.filter(m => state.watchlist.includes(m.id)).slice(0, 3)
-        : movies.slice(0, 3);
+  /*
+    ============================================================
+    RANK ITEM
+    ============================================================
+  */
 
-      $("#favoritesList").innerHTML = favs.map(m => `
+  function rankItem(movie, index) {
+    return `
+      <div class="rank-item" data-id="${movie.id}">
+        <div class="rank-number">
+          ${String(index + 1).padStart(2, "0")}
+        </div>
+
+        <img
+          class="rank-img"
+          src="${movie.poster}"
+          alt="${escapeHtml(movie.title)}"
+          loading="lazy"
+        >
+
+        <div>
+          <div class="rank-name">
+            ${escapeHtml(movie.title)}
+          </div>
+
+          <div class="rank-sub">
+            ★ ${movie.rating} · ${movie.year}
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+
+  /*
+    ============================================================
+    HERO
+    ============================================================
+  */
+
+  function renderHero() {
+    const movie = movies[state.heroIndex];
+
+    $("#heroImage").src = movie.image;
+    $("#heroImage").alt = movie.title;
+
+    $("#heroEyebrow").textContent =
+      `${movie.genre} · ${movie.year}`;
+
+    $("#heroTitle").textContent = movie.title;
+
+    $("#heroCopy").textContent = movie.description;
+
+    $("#heroMeta").innerHTML = `
+      <span class="imdb">IMDb</span>
+      <strong>${movie.rating}</strong>
+      <span>•</span>
+      <span>${movie.year}</span>
+      <span>•</span>
+      <span>${movie.duration}</span>
+    `;
+
+    $("#heroDots").innerHTML =
+      movies.slice(0, 5).map((m, i) => `
+        <button
+          class="hero-dot ${i === state.heroIndex ? "active" : ""}"
+          data-hero="${i}"
+          aria-label="Show ${escapeHtml(m.title)}"
+        ></button>
+      `).join("");
+
+    initIcons();
+  }
+
+
+  /*
+    ============================================================
+    HOME ROWS
+    ============================================================
+  */
+
+  function renderHomeRows() {
+    const filtered = getFilteredMovies();
+
+    $("#newRow").innerHTML =
+      filtered.slice(0, 8).map(movieCard).join("");
+
+    $("#trendRow").innerHTML =
+      filtered
+        .slice(3)
+        .concat(filtered.slice(0, 3))
+        .slice(0, 8)
+        .map(movieCard)
+        .join("");
+
+    $("#popularList").innerHTML =
+      movies
+        .slice(0, 6)
+        .map(rankItem)
+        .join("");
+
+    const favs = state.watchlist.length
+      ? movies
+          .filter((m) => state.watchlist.includes(m.id))
+          .slice(0, 3)
+      : movies.slice(0, 3);
+
+    $("#favoritesList").innerHTML =
+      favs.map((m) => `
         <div class="favorite" data-id="${m.id}">
-          <img src="${m.poster}" alt="${escapeHtml(m.title)}">
-          <div><div class="favorite-title">${escapeHtml(m.title)}</div><div class="favorite-sub">★ ${m.rating} · ${m.year}</div></div>
-          <button class="fav-remove" title="Remove from list"><i data-lucide="${state.watchlist.includes(m.id) ? "x" : "play"}" size="14"></i></button>
+          <img
+            src="${m.poster}"
+            alt="${escapeHtml(m.title)}"
+          >
+
+          <div>
+            <div class="favorite-title">
+              ${escapeHtml(m.title)}
+            </div>
+
+            <div class="favorite-sub">
+              ★ ${m.rating} · ${m.year}
+            </div>
+          </div>
+
+          <button
+            class="fav-remove"
+            title="Remove from list"
+          >
+            <i
+              data-lucide="${
+                state.watchlist.includes(m.id)
+                  ? "x"
+                  : "play"
+              }"
+              size="14"
+            ></i>
+          </button>
         </div>
       `).join("");
 
-      $("#homeEmpty").style.display = filtered.length ? "none" : "block";
-      bindMovieInteractions();
-      initIcons();
+    $("#homeEmpty").style.display =
+      filtered.length ? "none" : "block";
+
+    bindMovieInteractions();
+    initIcons();
+  }
+
+
+  /*
+    ============================================================
+    DYNAMIC PAGES
+    ============================================================
+  */
+
+  function renderDynamicPages() {
+    const all = getFilteredMovies();
+
+    $("#watchGrid").innerHTML =
+      movies
+        .filter((m) => state.watchlist.includes(m.id))
+        .map(movieCard)
+        .join("");
+
+    $("#watchEmpty").style.display =
+      state.watchlist.length ? "none" : "block";
+
+    $("#comingGrid").innerHTML =
+      movies.slice(5).map(movieCard).join("");
+
+    $("#discoveryGrid").innerHTML =
+      all.map(movieCard).join("");
+
+    $("#mediaGrid").innerHTML =
+      movies.slice(0, 8).map(movieCard).join("");
+
+    bindMovieInteractions();
+    initIcons();
+    updateWatchCount();
+  }
+
+
+  /*
+    ============================================================
+    FILTER
+    ============================================================
+  */
+
+  function getFilteredMovies() {
+    let result = [...movies];
+
+    if (state.filter !== "all") {
+      result = result.filter(
+        (m) =>
+          m.type === state.filter ||
+          (
+            state.filter === "movies" &&
+            m.type === "movies"
+          )
+      );
     }
 
-    function renderDynamicPages() {
-      const all = getFilteredMovies();
-      $("#watchGrid").innerHTML = movies.filter(m => state.watchlist.includes(m.id)).map(movieCard).join("");
-      $("#watchEmpty").style.display = state.watchlist.length ? "none" : "block";
+    if (state.query) {
+      const q = state.query.toLowerCase();
 
-      $("#comingGrid").innerHTML = movies.slice(5).map(movieCard).join("");
-      $("#discoveryGrid").innerHTML = all.map(movieCard).join("");
-      $("#mediaGrid").innerHTML = movies.slice(0, 8).map(movieCard).join("");
-
-      bindMovieInteractions();
-      initIcons();
-      updateWatchCount();
-    }
-
-    function getFilteredMovies() {
-      let result = [...movies];
-
-      if (state.filter !== "all") {
-        result = result.filter(m => m.type === state.filter || (state.filter === "movies" && m.type === "movies"));
-      }
-
-      if (state.query) {
-        const q = state.query.toLowerCase();
-        result = result.filter(m =>
+      result = result.filter(
+        (m) =>
           m.title.toLowerCase().includes(q) ||
           m.genre.toLowerCase().includes(q) ||
           String(m.year).includes(q)
+      );
+    }
+
+    return result;
+  }
+
+
+  /*
+    ============================================================
+    MOVIE INTERACTIONS
+    ============================================================
+  */
+
+  function bindMovieInteractions() {
+    $$(".movie-card, .rank-item, .favorite").forEach((el) => {
+      if (el.dataset.bound === "1") return;
+
+      el.dataset.bound = "1";
+
+      el.addEventListener("click", (event) => {
+        if (
+          event.target.closest(".movie-add, .fav-remove")
+        ) {
+          return;
+        }
+
+        const movie = movies.find(
+          (m) => m.id === el.dataset.id
         );
-      }
 
-      return result;
-    }
-
-    function bindMovieInteractions() {
-      $$(".movie-card, .rank-item, .favorite").forEach(el => {
-        if (el.dataset.bound === "1") return;
-        el.dataset.bound = "1";
-
-        el.addEventListener("click", (event) => {
-          if (event.target.closest(".movie-add, .fav-remove")) return;
-          const movie = movies.find(m => m.id === el.dataset.id);
-          if (movie) openPlayer(movie);
-        });
-
-        el.addEventListener("keydown", (event) => {
-          if (event.key === "Enter") {
-            const movie = movies.find(m => m.id === el.dataset.id);
-            if (movie) openPlayer(movie);
-          }
-        });
+        if (movie) {
+          openPlayer(movie);
+        }
       });
 
-      $$(".movie-add").forEach(btn => {
-        btn.addEventListener("click", (event) => {
-          event.stopPropagation();
-          const card = btn.closest(".movie-card");
+      el.addEventListener("keydown", (event) => {
+        if (event.key !== "Enter") return;
+
+        const movie = movies.find(
+          (m) => m.id === el.dataset.id
+        );
+
+        if (movie) {
+          openPlayer(movie);
+        }
+      });
+    });
+
+    $$(".movie-add").forEach((btn) => {
+      btn.addEventListener("click", (event) => {
+        event.stopPropagation();
+
+        const card = btn.closest(".movie-card");
+
+        if (card) {
           toggleWatchlist(card.dataset.id);
-        });
+        }
       });
+    });
 
-      $$(".fav-remove").forEach(btn => {
-        btn.addEventListener("click", (event) => {
-          event.stopPropagation();
-          const item = btn.closest(".favorite");
-          const id = item.dataset.id;
-          if (state.watchlist.includes(id)) toggleWatchlist(id);
-          else {
-            const movie = movies.find(m => m.id === id);
-            if (movie) openPlayer(movie);
+    $$(".fav-remove").forEach((btn) => {
+      btn.addEventListener("click", (event) => {
+        event.stopPropagation();
+
+        const item = btn.closest(".favorite");
+
+        if (!item) return;
+
+        const id = item.dataset.id;
+
+        if (state.watchlist.includes(id)) {
+          toggleWatchlist(id);
+        } else {
+          const movie = movies.find(
+            (m) => m.id === id
+          );
+
+          if (movie) {
+            openPlayer(movie);
           }
-        });
+        }
       });
+    });
+  }
+
+
+  /*
+    ============================================================
+    NAVIGATION
+    ============================================================
+  */
+
+  function navigate(page) {
+    state.page = page;
+
+    $$(".page-view").forEach((view) => {
+      view.classList.remove("active");
+    });
+
+    const target = $(`#page-${page}`);
+
+    if (target) {
+      target.classList.add("active");
     }
 
-    function navigate(page) {
-      state.page = page;
-      $$(".page-view").forEach(view => view.classList.remove("active"));
-      const target = $(`#page-${page}`);
-      if (target) target.classList.add("active");
+    $$(".nav-item[data-page]").forEach((btn) => {
+      btn.classList.toggle(
+        "active",
+        btn.dataset.page === page
+      );
+    });
 
-      $$(".nav-item[data-page]").forEach(btn => btn.classList.toggle("active", btn.dataset.page === page));
-      $("#sidebar").classList.remove("open");
+    $("#sidebar").classList.remove("open");
 
-      if (page === "watchlist" || page === "coming" || page === "discovery" || page === "media") renderDynamicPages();
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    }
-
-    function toggleWatchlist(id) {
-      const movie = movies.find(m => m.id === id);
-      if (!movie) return;
-
-      if (state.watchlist.includes(id)) {
-        state.watchlist = state.watchlist.filter(x => x !== id);
-        showToast(`${movie.title} removed from Watch List`);
-      } else {
-        state.watchlist.push(id);
-        showToast(`${movie.title} added to Watch List`);
-      }
-
-      localStorage.setItem("cinestream-watchlist", JSON.stringify(state.watchlist));
-      updateWatchCount();
-      renderHomeRows();
+    if (
+      page === "watchlist" ||
+      page === "coming" ||
+      page === "discovery" ||
+      page === "media"
+    ) {
       renderDynamicPages();
     }
 
-    function updateWatchCount() {
-      $("#watchCount").textContent = state.watchlist.length;
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    });
+  }
+
+
+  /*
+    ============================================================
+    WATCHLIST
+    ============================================================
+  */
+
+  function toggleWatchlist(id) {
+    const movie = movies.find(
+      (m) => m.id === id
+    );
+
+    if (!movie) return;
+
+    if (state.watchlist.includes(id)) {
+      state.watchlist =
+        state.watchlist.filter(
+          (x) => x !== id
+        );
+
+      showToast(
+        `${movie.title} removed from Watch List`
+      );
+    } else {
+      state.watchlist.push(id);
+
+      showToast(
+        `${movie.title} added to Watch List`
+      );
     }
 
-    function openPlayer(movie) {
-      $("#modalTitle").textContent = movie.title;
-      $("#videoStage").innerHTML = `
-        <iframe
-          src="${movie.trailer}?autoplay=1&rel=0"
-          title="${escapeHtml(movie.title)} trailer"
-          allow="autoplay; encrypted-media; picture-in-picture"
-          allowfullscreen>
-        </iframe>
-      `;
-      $("#videoModal").classList.add("open");
-      document.body.style.overflow = "hidden";
-    }
+    localStorage.setItem(
+      "cinestream-watchlist",
+      JSON.stringify(state.watchlist)
+    );
 
-    function closePlayer() {
-      $("#videoModal").classList.remove("open");
-      $("#videoStage").innerHTML = "";
-      document.body.style.overflow = "";
-    }
-
-    function showToast(message, icon = "check-circle") {
-      const toast = document.createElement("div");
-      toast.className = "toast";
-      toast.innerHTML = `<i data-lucide="${icon}" size="15"></i><span>${escapeHtml(message)}</span>`;
-      $("#toastContainer").appendChild(toast);
-      initIcons();
-
-      setTimeout(() => {
-        toast.classList.add("out");
-        setTimeout(() => toast.remove(), 260);
-      }, 2500);
-    }
-
-    function setTheme(light) {
-      document.body.classList.toggle("light", light);
-      localStorage.setItem("cinestream-theme", light ? "light" : "dark");
-      $("#themeToggle").innerHTML = `<i data-lucide="${light ? "sun" : "moon"}" size="15"></i>`;
-      $("#settingsTheme").innerHTML = `<i data-lucide="${light ? "sun" : "moon"}" size="17"></i>`;
-      initIcons();
-    }
-
-    function escapeHtml(value) {
-      return String(value).replace(/[&<>"']/g, ch => ({
-        "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#039;"
-      }[ch]));
-    }
-
-    function openDirectLink() {
-      if (!CONFIG.DIRECT_LINK || CONFIG.DIRECT_LINK.includes("contoh-direct-link")) {
-        showToast("Set your real DIRECT_LINK in CONFIG first.", "info");
-        return;
-      }
-      window.open(CONFIG.DIRECT_LINK, "_blank", "noopener,noreferrer");
-    }
-
-    // Sidebar navigation
-    $$(".nav-item[data-page]").forEach(btn => {
-      btn.addEventListener("click", () => navigate(btn.dataset.page));
-    });
-
-    // Top category filter
-    $$("[data-top-filter]").forEach(btn => {
-      btn.addEventListener("click", () => {
-        state.filter = btn.dataset.topFilter;
-        $$("[data-top-filter]").forEach(x => x.classList.toggle("active", x === btn));
-        if (state.page !== "home") navigate("home");
-        renderHomeRows();
-        showToast(`Showing ${btn.textContent.trim()}`);
-      });
-    });
-
-    // Search
-    $("#searchInput").addEventListener("input", e => {
-      state.query = e.target.value.trim();
-      $("#clearSearch").style.display = state.query ? "block" : "none";
-      renderHomeRows();
-      renderDynamicPages();
-    });
-
-    $("#clearSearch").addEventListener("click", () => {
-      $("#searchInput").value = "";
-      state.query = "";
-      $("#clearSearch").style.display = "none";
-      renderHomeRows();
-      renderDynamicPages();
-    });
-
-    // Hero
-    $("#heroWatch").addEventListener("click", () => {
-      openPlayer(movies[state.heroIndex]);
-    });
-
-    $("#heroAdd").addEventListener("click", () => {
-      toggleWatchlist(movies[state.heroIndex].id);
-    });
-
-    $("#heroDots").addEventListener("click", e => {
-      const btn = e.target.closest("[data-hero]");
-      if (!btn) return;
-      state.heroIndex = Number(btn.dataset.hero);
-      renderHero();
-    });
-
-    // Auto rotate hero
-    setInterval(() => {
-      if (state.page !== "home" || document.hidden) return;
-      state.heroIndex = (state.heroIndex + 1) % Math.min(movies.length, 5);
-      renderHero();
-    }, 7000);
-
-    // Horizontal row controls
-    $$("[data-scroll]").forEach(btn => {
-      btn.addEventListener("click", () => {
-        const row = $(`#${btn.dataset.scroll}`);
-        row.scrollBy({ left: Number(btn.dataset.dir) * 500, behavior: "smooth" });
-      });
-    });
-
-    // View More / page links
-    $$("[data-page]").forEach(btn => {
-      if (btn.classList.contains("nav-item")) return;
-      btn.addEventListener("click", () => navigate(btn.dataset.page));
-    });
-
-    // Theme
-    const savedTheme = localStorage.getItem("cinestream-theme");
-    setTheme(savedTheme === "light");
-
-    $("#themeToggle").addEventListener("click", () => {
-      setTheme(!document.body.classList.contains("light"));
-      showToast(document.body.classList.contains("light") ? "Light mode enabled" : "Night mode enabled", "sun-moon");
-    });
-
-    $("#settingsTheme").addEventListener("click", () => {
-      setTheme(!document.body.classList.contains("light"));
-      showToast("Theme updated", "palette");
-    });
-
-    $("#notifyBtn").addEventListener("click", () => {
-      showToast("You have 3 new notifications", "bell");
-    });
-
-    $("#autoplaySetting").addEventListener("click", () => showToast("Autoplay preference updated", "toggle-right"));
-    $("#notificationSetting").addEventListener("click", () => showToast("Notification preference updated", "bell"));
-
-    $("#logoutBtn").addEventListener("click", () => showToast("Demo logout — connect your real auth here.", "log-out"));
-
-    // Mobile sidebar
-    $("#mobileMenu").addEventListener("click", () => $("#sidebar").classList.toggle("open"));
-
-    // Modal
-    $("#closeModal").addEventListener("click", closePlayer);
-    $("#videoModal").addEventListener("click", e => {
-      if (e.target === $("#videoModal")) closePlayer();
-    });
-
-    document.addEventListener("keydown", e => {
-      if (e.key === "Escape") closePlayer();
-    });
-
-    // Initial render
-    renderHero();
+    updateWatchCount();
     renderHomeRows();
     renderDynamicPages();
-    updateWatchCount();
+  }
+
+
+  function updateWatchCount() {
+    $("#watchCount").textContent =
+      state.watchlist.length;
+  }
+
+
+  /*
+    ============================================================
+    VIDEO PLAYER
+    ============================================================
+  */
+
+  function openPlayer(movie) {
+    $("#modalTitle").textContent =
+      movie.title;
+
+    $("#videoStage").innerHTML = `
+      <iframe
+        src="${movie.trailer}?autoplay=1&rel=0"
+        title="${escapeHtml(movie.title)} trailer"
+        allow="autoplay; encrypted-media; picture-in-picture"
+        allowfullscreen>
+      </iframe>
+    `;
+
+    $("#videoModal").classList.add("open");
+
+    document.body.style.overflow = "hidden";
+  }
+
+
+  function closePlayer() {
+    $("#videoModal").classList.remove("open");
+
+    $("#videoStage").innerHTML = "";
+
+    document.body.style.overflow = "";
+  }
+
+
+  /*
+    ============================================================
+    TOAST
+    ============================================================
+  */
+
+  function showToast(
+    message,
+    icon = "check-circle"
+  ) {
+    const toast =
+      document.createElement("div");
+
+    toast.className = "toast";
+
+    toast.innerHTML = `
+      <i
+        data-lucide="${icon}"
+        size="15">
+      </i>
+
+      <span>
+        ${escapeHtml(message)}
+      </span>
+    `;
+
+    $("#toastContainer").appendChild(toast);
+
     initIcons();
 
-    loadAdBanner("squareAd", CONFIG.BANNER_KOTAK);
-    loadAdBanner("horizontalAd", CONFIG.BANNER_HORIZONTAL);
+    setTimeout(() => {
+      toast.classList.add("out");
 
-    /*
-      Adsterra placement helper:
-      The visible placeholders above are intentionally safe for GitHub.
-      To inject your real ad code, replace the innerHTML of #squareAd and
-      #horizontalAd with the script snippets supplied by your ad network.
-    */
-  </script>
+      setTimeout(() => {
+        toast.remove();
+      }, 260);
+    }, 2500);
+  }
+
+
+  /*
+    ============================================================
+    THEME
+    ============================================================
+  */
+
+  function setTheme(light) {
+    document.body.classList.toggle(
+      "light",
+      light
+    );
+
+    localStorage.setItem(
+      "cinestream-theme",
+      light ? "light" : "dark"
+    );
+
+    $("#themeToggle").innerHTML = `
+      <i
+        data-lucide="${light ? "sun" : "moon"}"
+        size="15">
+      </i>
+    `;
+
+    $("#settingsTheme").innerHTML = `
+      <i
+        data-lucide="${light ? "sun" : "moon"}"
+        size="17">
+      </i>
+    `;
+
+    initIcons();
+  }
+
+
+  /*
+    ============================================================
+    HTML ESCAPE
+    ============================================================
+  */
+
+  function escapeHtml(value) {
+    return String(value).replace(
+      /[&<>"']/g,
+      (ch) => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#039;"
+      })[ch]
+    );
+  }
+
+
+  /*
+    ============================================================
+    DIRECT LINK
+    ============================================================
+  */
+
+  function openDirectLink() {
+    if (
+      !CONFIG.DIRECT_LINK ||
+      CONFIG.DIRECT_LINK.includes(
+        "contoh-direct-link"
+      )
+    ) {
+      showToast(
+        "Set your real DIRECT_LINK in CONFIG first.",
+        "info"
+      );
+
+      return;
+    }
+
+    window.open(
+      CONFIG.DIRECT_LINK,
+      "_blank",
+      "noopener,noreferrer"
+    );
+  }
+
+
+  /*
+    ============================================================
+    SIDEBAR NAVIGATION
+    ============================================================
+  */
+
+  $$(".nav-item[data-page]").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      navigate(btn.dataset.page);
+    });
+  });
+
+
+  /*
+    ============================================================
+    TOP CATEGORY FILTER
+    ============================================================
+  */
+
+  $$("[data-top-filter]").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      state.filter =
+        btn.dataset.topFilter;
+
+      $$("[data-top-filter]").forEach((x) => {
+        x.classList.toggle(
+          "active",
+          x === btn
+        );
+      });
+
+      if (state.page !== "home") {
+        navigate("home");
+      }
+
+      renderHomeRows();
+
+      showToast(
+        `Showing ${btn.textContent.trim()}`
+      );
+    });
+  });
+
+
+  /*
+    ============================================================
+    SEARCH
+    ============================================================
+  */
+
+  $("#searchInput").addEventListener(
+    "input",
+    (event) => {
+      state.query =
+        event.target.value.trim();
+
+      $("#clearSearch").style.display =
+        state.query ? "block" : "none";
+
+      renderHomeRows();
+      renderDynamicPages();
+    }
+  );
+
+
+  $("#clearSearch").addEventListener(
+    "click",
+    () => {
+      $("#searchInput").value = "";
+
+      state.query = "";
+
+      $("#clearSearch").style.display =
+        "none";
+
+      renderHomeRows();
+      renderDynamicPages();
+    }
+  );
+
+
+  /*
+    ============================================================
+    HERO CONTROLS
+    ============================================================
+  */
+
+  $("#heroWatch").addEventListener(
+    "click",
+    () => {
+      openPlayer(
+        movies[state.heroIndex]
+      );
+    }
+  );
+
+
+  $("#heroAdd").addEventListener(
+    "click",
+    () => {
+      toggleWatchlist(
+        movies[state.heroIndex].id
+      );
+    }
+  );
+
+
+  $("#heroDots").addEventListener(
+    "click",
+    (event) => {
+      const btn =
+        event.target.closest("[data-hero]");
+
+      if (!btn) return;
+
+      state.heroIndex =
+        Number(btn.dataset.hero);
+
+      renderHero();
+    }
+  );
+
+
+  /*
+    ============================================================
+    AUTO HERO ROTATION
+    ============================================================
+  */
+
+  setInterval(() => {
+    if (
+      state.page !== "home" ||
+      document.hidden
+    ) {
+      return;
+    }
+
+    state.heroIndex =
+      (state.heroIndex + 1) %
+      Math.min(movies.length, 5);
+
+    renderHero();
+  }, 7000);
+
+
+  /*
+    ============================================================
+    HORIZONTAL ROW CONTROLS
+    ============================================================
+  */
+
+  $$("[data-scroll]").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const row =
+        $(`#${btn.dataset.scroll}`);
+
+      if (!row) return;
+
+      row.scrollBy({
+        left:
+          Number(btn.dataset.dir) * 500,
+        behavior: "smooth"
+      });
+    });
+  });
+
+
+  /*
+    ============================================================
+    VIEW MORE / PAGE LINKS
+    ============================================================
+  */
+
+  $$("[data-page]").forEach((btn) => {
+    if (
+      btn.classList.contains("nav-item")
+    ) {
+      return;
+    }
+
+    btn.addEventListener("click", () => {
+      navigate(btn.dataset.page);
+    });
+  });
+
+
+  /*
+    ============================================================
+    THEME BUTTON
+    ============================================================
+  */
+
+  const savedTheme =
+    localStorage.getItem(
+      "cinestream-theme"
+    );
+
+  setTheme(savedTheme === "light");
+
+
+  $("#themeToggle").addEventListener(
+    "click",
+    () => {
+      setTheme(
+        !document.body.classList.contains(
+          "light"
+        )
+      );
+
+      showToast(
+        document.body.classList.contains(
+          "light"
+        )
+          ? "Light mode enabled"
+          : "Night mode enabled",
+        "sun-moon"
+      );
+    }
+  );
+
+
+  $("#settingsTheme").addEventListener(
+    "click",
+    () => {
+      setTheme(
+        !document.body.classList.contains(
+          "light"
+        )
+      );
+
+      showToast(
+        "Theme updated",
+        "palette"
+      );
+    }
+  );
+
+
+  /*
+    ============================================================
+    NOTIFICATIONS
+    ============================================================
+  */
+
+  $("#notifyBtn").addEventListener(
+    "click",
+    () => {
+      showToast(
+        "You have 3 new notifications",
+        "bell"
+      );
+    }
+  );
+
+
+  /*
+    ============================================================
+    SETTINGS
+    ============================================================
+  */
+
+  $("#autoplaySetting").addEventListener(
+    "click",
+    () => {
+      showToast(
+        "Autoplay preference updated",
+        "toggle-right"
+      );
+    }
+  );
+
+
+  $("#notificationSetting").addEventListener(
+    "click",
+    () => {
+      showToast(
+        "Notification preference updated",
+        "bell"
+      );
+    }
+  );
+
+
+  $("#logoutBtn").addEventListener(
+    "click",
+    () => {
+      showToast(
+        "Demo logout — connect your real auth here.",
+        "log-out"
+      );
+    }
+  );
+
+
+  /*
+    ============================================================
+    MOBILE SIDEBAR
+    ============================================================
+  */
+
+  $("#mobileMenu").addEventListener(
+    "click",
+    () => {
+      $("#sidebar").classList.toggle(
+        "open"
+      );
+    }
+  );
+
+
+  /*
+    ============================================================
+    VIDEO MODAL
+    ============================================================
+  */
+
+  $("#closeModal").addEventListener(
+    "click",
+    closePlayer
+  );
+
+
+  $("#videoModal").addEventListener(
+    "click",
+    (event) => {
+      if (
+        event.target ===
+        $("#videoModal")
+      ) {
+        closePlayer();
+      }
+    }
+  );
+
+
+  document.addEventListener(
+    "keydown",
+    (event) => {
+      if (event.key === "Escape") {
+        closePlayer();
+      }
+    }
+  );
+
+
+  /*
+    ============================================================
+    INITIAL RENDER
+    ============================================================
+  */
+
+  renderHero();
+  renderHomeRows();
+  renderDynamicPages();
+  updateWatchCount();
+  initIcons();
+
+
+  /*
+    ============================================================
+    LOAD AD BANNERS
+    ============================================================
+  */
+
+  loadAdBanner(
+    "squareAd",
+    CONFIG.BANNER_KOTAK
+  );
+
+  loadAdBanner(
+    "horizontalAd",
+    CONFIG.BANNER_HORIZONTAL
+  );
+</script>
 </body>
 </html>
