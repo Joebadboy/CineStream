@@ -970,73 +970,88 @@
   <div class="toast-container" id="toastContainer"></div>
 
   <script>
-  /*
-    ============================================================
-    CineStream — GitHub Pages Ready
-    ============================================================
-    Configuration:
-    - Smart Link / Direct Link
-    - Adsterra 300x250
-    - Adsterra 728x90
-  */
-
+    
   const CONFIG = {
-    DIRECT_LINK: "https://www.profitableratecpmnetwork.com/yj28w1ws?key=7ecfaf9f9f2818133fad476b8bb6e3b6",
+  DIRECT_LINK: "https://www.profitableratecpmnetwork.com/yj28w1ws?key=7ecfaf9f9f2818133fad476b8bb6e3b6",
 
-    BANNER_KOTAK: {
-      key: "4aefaaa916ca6e1495907ed63cb68dae",
-      width: 300,
-      height: 250,
-      src: "https://www.highrevenueformat.com/4aefaaa916ca6e1495907ed63cb68dae/invoke.js"
-    },
+  BANNER_KOTAK: {
+    key: "4aefaaa916ca6e1495907ed63cb68dae",
+    width: 300,
+    height: 250,
+    src: "https://www.highrevenueformat.com/4aefaaa916ca6e1495907ed63cb68dae/invoke.js"
+  },
 
-    BANNER_HORIZONTAL: {
-      key: "c8d51593a49bd70af4beea6ece118f65",
-      width: 728,
-      height: 90,
-      src: "https://www.highrevenueformat.com/c8d51593a49bd70af4beea6ece118f65/invoke.js"
-    }
-  };
+  BANNER_HORIZONTAL: {
+    key: "c8d51593a49bd70af4beea6ece118f65",
+    width: 728,
+    height: 90,
+    src: "https://www.highrevenueformat.com/c8d51593a49bd70af4beea6ece118f65/invoke.js"
+  }
+};
 
-  /*
-    ============================================================
-    AD BANNER LOADER
-    ============================================================
-  */
 
-  function loadAdBanner(containerId, adConfig) {
+/* ============================================================
+   AD BANNER LOADER
+   Memuat satu banner sampai selesai sebelum banner berikutnya.
+   Ini mencegah atOptions tertimpa antar-banner.
+   ============================================================ */
+
+function loadAdBanner(containerId, adConfig) {
+  return new Promise((resolve) => {
     const container = document.getElementById(containerId);
 
-    if (!container || !adConfig) {
+    if (!container) {
+      resolve();
       return;
     }
 
     container.innerHTML = "";
 
-    const optionsScript = document.createElement("script");
+    /* Konfigurasi global yang dibaca oleh invoke.js */
+    window.atOptions = {
+      key: adConfig.key,
+      format: "iframe",
+      height: adConfig.height,
+      width: adConfig.width,
+      params: {}
+    };
 
-    optionsScript.type = "text/javascript";
-    optionsScript.text = `
-      window.atOptions = {
-        key: "${adConfig.key}",
-        format: "iframe",
-        height: ${adConfig.height},
-        width: ${adConfig.width},
-        params: {}
-      };
-    `;
+    const script = document.createElement("script");
 
-    container.appendChild(optionsScript);
+    script.src = adConfig.src;
+    script.type = "text/javascript";
+    script.async = false;
 
-    const invokeScript = document.createElement("script");
+    script.onload = () => {
+      resolve();
+    };
 
-    invokeScript.type = "text/javascript";
-    invokeScript.src = adConfig.src;
-    invokeScript.async = false;
+    script.onerror = () => {
+      console.warn("Ad failed to load:", adConfig.src);
+      resolve();
+    };
 
-    container.appendChild(invokeScript);
-  }
+    container.appendChild(script);
+  });
+}
 
+
+/* ============================================================
+   LOAD ADS SEQUENTIALLY
+   Banner pertama selesai → baru banner kedua.
+   ============================================================ */
+
+async function loadAllAds() {
+  await loadAdBanner(
+    "horizontalAd",
+    CONFIG.BANNER_HORIZONTAL
+  );
+
+  await loadAdBanner(
+    "squareAd",
+    CONFIG.BANNER_KOTAK
+  );
+}
 
   /*
     ============================================================
@@ -2180,22 +2195,6 @@
   updateWatchCount();
   initIcons();
 
-
-  /*
-    ============================================================
-    LOAD AD BANNERS
-    ============================================================
-  */
-
-  loadAdBanner(
-    "squareAd",
-    CONFIG.BANNER_KOTAK
-  );
-
-  loadAdBanner(
-    "horizontalAd",
-    CONFIG.BANNER_HORIZONTAL
-  );
 </script>
 </body>
 </html>
