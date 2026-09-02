@@ -989,13 +989,6 @@
   }
 };
 
-
-/* ============================================================
-   AD BANNER LOADER
-   Memuat satu banner sampai selesai sebelum banner berikutnya.
-   Ini mencegah atOptions tertimpa antar-banner.
-   ============================================================ */
-
 function loadAdBanner(containerId, adConfig) {
   return new Promise((resolve) => {
     const container = document.getElementById(containerId);
@@ -1035,12 +1028,6 @@ function loadAdBanner(containerId, adConfig) {
   });
 }
 
-
-/* ============================================================
-   LOAD ADS SEQUENTIALLY
-   Banner pertama selesai → baru banner kedua.
-   ============================================================ */
-
 async function loadAllAds() {
   await loadAdBanner(
     "horizontalAd",
@@ -1052,12 +1039,6 @@ async function loadAllAds() {
     CONFIG.BANNER_KOTAK
   );
 }
-
-  /*
-    ============================================================
-    MOVIE DATA
-    ============================================================
-  */
 
   const movies = [
     {
@@ -1205,13 +1186,6 @@ async function loadAllAds() {
     }
   ];
 
-
-  /*
-    ============================================================
-    APPLICATION STATE
-    ============================================================
-  */
-
   const state = {
     heroIndex: 0,
     page: "home",
@@ -1222,35 +1196,15 @@ async function loadAllAds() {
     )
   };
 
-
-  /*
-    ============================================================
-    DOM HELPERS
-    ============================================================
-  */
-
   const $ = (selector) => document.querySelector(selector);
   const $$ = (selector) => [...document.querySelectorAll(selector)];
 
-
-  /*
-    ============================================================
-    ICONS
-    ============================================================
-  */
 
   function initIcons() {
     if (window.lucide) {
       lucide.createIcons();
     }
   }
-
-
-  /*
-    ============================================================
-    MOVIE CARD
-    ============================================================
-  */
 
   function movieCard(movie) {
     const saved = state.watchlist.includes(movie.id);
@@ -1292,13 +1246,6 @@ async function loadAllAds() {
     `;
   }
 
-
-  /*
-    ============================================================
-    RANK ITEM
-    ============================================================
-  */
-
   function rankItem(movie, index) {
     return `
       <div class="rank-item" data-id="${movie.id}">
@@ -1325,13 +1272,6 @@ async function loadAllAds() {
       </div>
     `;
   }
-
-
-  /*
-    ============================================================
-    HERO
-    ============================================================
-  */
 
   function renderHero() {
     const movie = movies[state.heroIndex];
@@ -1366,13 +1306,6 @@ async function loadAllAds() {
 
     initIcons();
   }
-
-
-  /*
-    ============================================================
-    HOME ROWS
-    ============================================================
-  */
 
   function renderHomeRows() {
     const filtered = getFilteredMovies();
@@ -1442,12 +1375,6 @@ async function loadAllAds() {
   }
 
 
-  /*
-    ============================================================
-    DYNAMIC PAGES
-    ============================================================
-  */
-
   function renderDynamicPages() {
     const all = getFilteredMovies();
 
@@ -1473,13 +1400,6 @@ async function loadAllAds() {
     initIcons();
     updateWatchCount();
   }
-
-
-  /*
-    ============================================================
-    FILTER
-    ============================================================
-  */
 
   function getFilteredMovies() {
     let result = [...movies];
@@ -1508,13 +1428,6 @@ async function loadAllAds() {
 
     return result;
   }
-
-
-  /*
-    ============================================================
-    MOVIE INTERACTIONS
-    ============================================================
-  */
 
   function bindMovieInteractions() {
     $$(".movie-card, .rank-item, .favorite").forEach((el) => {
@@ -1589,12 +1502,6 @@ async function loadAllAds() {
   }
 
 
-  /*
-    ============================================================
-    NAVIGATION
-    ============================================================
-  */
-
   function navigate(page) {
     state.page = page;
 
@@ -1631,13 +1538,6 @@ async function loadAllAds() {
       behavior: "smooth"
     });
   }
-
-
-  /*
-    ============================================================
-    WATCHLIST
-    ============================================================
-  */
 
   function toggleWatchlist(id) {
     const movie = movies.find(
@@ -1679,13 +1579,6 @@ async function loadAllAds() {
       state.watchlist.length;
   }
 
-
-  /*
-    ============================================================
-    VIDEO PLAYER
-    ============================================================
-  */
-
   function openPlayer(movie) {
     $("#modalTitle").textContent =
       movie.title;
@@ -1712,13 +1605,6 @@ async function loadAllAds() {
 
     document.body.style.overflow = "";
   }
-
-
-  /*
-    ============================================================
-    TOAST
-    ============================================================
-  */
 
   function showToast(
     message,
@@ -1753,13 +1639,6 @@ async function loadAllAds() {
     }, 2500);
   }
 
-
-  /*
-    ============================================================
-    THEME
-    ============================================================
-  */
-
   function setTheme(light) {
     document.body.classList.toggle(
       "light",
@@ -1789,12 +1668,6 @@ async function loadAllAds() {
   }
 
 
-  /*
-    ============================================================
-    HTML ESCAPE
-    ============================================================
-  */
-
   function escapeHtml(value) {
     return String(value).replace(
       /[&<>"']/g,
@@ -1808,12 +1681,6 @@ async function loadAllAds() {
     );
   }
 
-
-  /*
-    ============================================================
-    DIRECT LINK
-    ============================================================
-  */
 
   function openDirectLink() {
     if (
@@ -1838,24 +1705,12 @@ async function loadAllAds() {
   }
 
 
-  /*
-    ============================================================
-    SIDEBAR NAVIGATION
-    ============================================================
-  */
-
   $$(".nav-item[data-page]").forEach((btn) => {
     btn.addEventListener("click", () => {
       navigate(btn.dataset.page);
     });
   });
 
-
-  /*
-    ============================================================
-    TOP CATEGORY FILTER
-    ============================================================
-  */
 
   $$("[data-top-filter]").forEach((btn) => {
     btn.addEventListener("click", () => {
@@ -1881,12 +1736,6 @@ async function loadAllAds() {
     });
   });
 
-
-  /*
-    ============================================================
-    SEARCH
-    ============================================================
-  */
 
   $("#searchInput").addEventListener(
     "input",
@@ -1918,12 +1767,6 @@ async function loadAllAds() {
     }
   );
 
-
-  /*
-    ============================================================
-    HERO CONTROLS
-    ============================================================
-  */
 
   $("#heroWatch").addEventListener(
     "click",
@@ -1961,11 +1804,6 @@ async function loadAllAds() {
   );
 
 
-  /*
-    ============================================================
-    AUTO HERO ROTATION
-    ============================================================
-  */
 
   setInterval(() => {
     if (
@@ -1983,12 +1821,6 @@ async function loadAllAds() {
   }, 7000);
 
 
-  /*
-    ============================================================
-    HORIZONTAL ROW CONTROLS
-    ============================================================
-  */
-
   $$("[data-scroll]").forEach((btn) => {
     btn.addEventListener("click", () => {
       const row =
@@ -2005,12 +1837,6 @@ async function loadAllAds() {
   });
 
 
-  /*
-    ============================================================
-    VIEW MORE / PAGE LINKS
-    ============================================================
-  */
-
   $$("[data-page]").forEach((btn) => {
     if (
       btn.classList.contains("nav-item")
@@ -2022,13 +1848,6 @@ async function loadAllAds() {
       navigate(btn.dataset.page);
     });
   });
-
-
-  /*
-    ============================================================
-    THEME BUTTON
-    ============================================================
-  */
 
   const savedTheme =
     localStorage.getItem(
@@ -2076,12 +1895,6 @@ async function loadAllAds() {
   );
 
 
-  /*
-    ============================================================
-    NOTIFICATIONS
-    ============================================================
-  */
-
   $("#notifyBtn").addEventListener(
     "click",
     () => {
@@ -2092,12 +1905,6 @@ async function loadAllAds() {
     }
   );
 
-
-  /*
-    ============================================================
-    SETTINGS
-    ============================================================
-  */
 
   $("#autoplaySetting").addEventListener(
     "click",
@@ -2132,11 +1939,6 @@ async function loadAllAds() {
   );
 
 
-  /*
-    ============================================================
-    MOBILE SIDEBAR
-    ============================================================
-  */
 
   $("#mobileMenu").addEventListener(
     "click",
@@ -2146,13 +1948,6 @@ async function loadAllAds() {
       );
     }
   );
-
-
-  /*
-    ============================================================
-    VIDEO MODAL
-    ============================================================
-  */
 
   $("#closeModal").addEventListener(
     "click",
@@ -2181,13 +1976,6 @@ async function loadAllAds() {
       }
     }
   );
-
-
-  /*
-    ============================================================
-    INITIAL RENDER
-    ============================================================
-  */
 
   renderHero();
   renderHomeRows();
